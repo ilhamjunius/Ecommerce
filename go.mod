@@ -14,4 +14,5 @@ require (
 	github.com/spf13/viper v1.10.1
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.1 // indirect
+	gorm.io/driver/mysql v1.2.3
 )
