@@ -2,6 +2,7 @@ package utils
 
 import (
 	"ecommerce/configs"
+	"ecommerce/entities"
 	"fmt"
 
 	"github.com/labstack/gommon/log"
@@ -31,5 +32,10 @@ func InitDB(config *configs.AppConfig) *gorm.DB {
 }
 
 func InitMigrate(db *gorm.DB) {
-
+	db.AutoMigrate(&entities.User{})
+	db.AutoMigrate(&entities.ShoppingCart{})
+	db.AutoMigrate(&entities.Product{})
+	db.AutoMigrate(&entities.Payment{})
+	db.AutoMigrate(&entities.Order{})
+	db.AutoMigrate(&entities.Category{})
 }
