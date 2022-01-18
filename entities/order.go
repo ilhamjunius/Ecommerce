@@ -4,9 +4,9 @@ import "gorm.io/gorm"
 
 type Order struct {
 	gorm.Model
-	OrderID uint
-	Payment Payment
-	User    User
-	Total   int
-	Status  string
+	ID        uint
+	PaymentId uint
+	UserID    uint
+	Total     int
+	Status    string
 }
