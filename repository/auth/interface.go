@@ -3,5 +3,5 @@ package auth
 import "ecommerce/entities"
 
 type AuthInterface interface {
-	LoginUser(email, password string) (entities.User, error)
+	LoginUser(email string, password [32]byte) (entities.User, error)
 }
