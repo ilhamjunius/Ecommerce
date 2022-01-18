@@ -6,7 +6,7 @@ type ShoppingCart struct {
 	gorm.Model
 	//SHOPPINGCARTID AUTO GENERATE
 	ShoppingCartID uint
-	UserID         uint
-	ProductID      uint
+	User           User
+	Product        Product
 	Qty            int
 }
