@@ -5,8 +5,11 @@ import "gorm.io/gorm"
 type ShoppingCart struct {
 	gorm.Model
 	//SHOPPINGCARTID AUTO GENERATE
-	ShoppingCartID uint
-	User           User
-	Product        Product
-	Qty            int
+	ID        uint
+	User      User
+	UserID    uint
+	Product   Product
+	ProductID uint
+	Order     []*Order `gorm:"many2many:shoppingcart_order;"`
+	Qty       int
 }
