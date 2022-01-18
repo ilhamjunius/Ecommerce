@@ -6,7 +6,7 @@ type User struct {
 	gorm.Model
 	//USERID AUTO GENERATE
 	Email           string
-	Password        string
+	Password        [32]byte
 	Name            string
 	HandphoneNumber string
 }
