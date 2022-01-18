@@ -3,5 +3,5 @@ WORKDIR /app
 COPY . ./
 RUN go mod download
 COPY *.go ./
-RUN go build -o /ProjekEcommerce
-CMD ["/ProjekEcommerce"]
+RUN go build -o /ecommerce
+CMD ["/ecommerce"]
