@@ -27,7 +27,7 @@ func (cr *CategoryRepository) GetAll() ([]entities.Category, error) {
 
 func (cr *CategoryRepository) Get(categoryId int) (entities.Category, error) {
 	category := entities.Category{}
-	if err := cr.db.Find(&category, categoryId).Error; err != nil {
+	if err := cr.db.First(&category, categoryId).Error; err != nil {
 		log.Warn("Found database error", err)
 		return category, err
 	}
