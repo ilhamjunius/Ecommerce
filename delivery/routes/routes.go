@@ -19,6 +19,12 @@ func RegisterPath(e *echo.Echo, uc *user.UsersController, pc *product.ProductCon
 	e.POST("/shoppingcart", sc.CreateShoppingCartCtrl())
 	e.PUT("/shoppingcart/:id", sc.UpdateShoppingCartCtrl())
 	e.DELETE("/shoppingcart/:id", sc.DeleteShoppingCartCtrl())
+	e.GET("/products", pc.GetAllProductCtrl())
+	e.POST("/products", pc.CreateProductControllers())
+	e.PUT("/products/:id", pc.UpdateProductCtrl())
+	e.DELETE("/products/:id", pc.DeleteProductCtrl())
+	e.POST("/users/register", uc.RegisterUserCtrl())
+	e.POST("/users/login", ac.LoginAuthCtrl())
 
 	e.Logger.Fatal(e.Start(":8000"))
 
