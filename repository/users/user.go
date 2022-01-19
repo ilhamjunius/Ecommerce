@@ -25,7 +25,7 @@ func (ur *UserRepository) GetAll() ([]entities.User, error) {
 
 func (ur *UserRepository) Get(userId int) (entities.User, error) {
 	user := entities.User{}
-	if err := ur.db.Find(&user, userId).Error; err != nil {
+	if err := ur.db.First(&user, userId).Error; err != nil {
 		return user, err
 	}
 	return user, nil
@@ -43,7 +43,7 @@ func (ur *UserRepository) Create(newUser entities.User) (entities.User, error) {
 
 func (ur *UserRepository) Update(newUser entities.User, userId int) (entities.User, error) {
 	user := entities.User{}
-	if err := ur.db.Find(&user, "id=?", userId).Error; err != nil {
+	if err := ur.db.First(&user, "id=?", userId).Error; err != nil {
 		return newUser, err
 	}
 
@@ -64,7 +64,7 @@ func (ur *UserRepository) Update(newUser entities.User, userId int) (entities.Us
 
 func (ur *UserRepository) Delete(userId int) (entities.User, error) {
 	user := entities.User{}
-	if err := ur.db.Find(&user, "id=?", userId).Error; err != nil {
+	if err := ur.db.First(&user, "id=?", userId).Error; err != nil {
 		return user, err
 	}
 	ur.db.Delete(&user)
