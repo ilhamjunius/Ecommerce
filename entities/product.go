@@ -16,7 +16,7 @@ type Product struct {
 	Name         string         `json:"product_name" form:"product_name"`
 	Price        int            `json:"price" form:"price"`
 	Stock        int            `json:"stock" form:"stok"`
-	CategoryID   uint           `gorm:"unique;not null" json:"category_id" form:"category_id"`
+	CategoryID   uint           `gorm:"not null" json:"category_id" form:"category_id"`
 	Description  string         `json:"description" form:"description"`
 	ShoppingCart []ShoppingCart `gorm:"-"`
 }
