@@ -1,0 +1,19 @@
+mode: set
+ecommerce/repository/products/product.go:13.53,15.2 1 1
+ecommerce/repository/products/product.go:17.67,19.52 2 1
+ecommerce/repository/products/product.go:22.2,22.22 1 1
+ecommerce/repository/products/product.go:19.52,21.3 1 0
+ecommerce/repository/products/product.go:25.75,27.62 2 1
+ecommerce/repository/products/product.go:30.2,30.21 1 1
+ecommerce/repository/products/product.go:27.62,29.3 1 0
+ecommerce/repository/products/product.go:33.92,35.54 1 1
+ecommerce/repository/products/product.go:38.2,38.24 1 1
+ecommerce/repository/products/product.go:35.54,37.3 1 0
+ecommerce/repository/products/product.go:41.107,43.70 2 1
+ecommerce/repository/products/product.go:47.2,55.24 7 1
+ecommerce/repository/products/product.go:43.70,45.3 1 0
+ecommerce/repository/products/product.go:58.78,60.70 2 1
+ecommerce/repository/products/product.go:64.2,64.53 1 1
+ecommerce/repository/products/product.go:68.2,68.21 1 1
+ecommerce/repository/products/product.go:60.70,62.3 1 0
+ecommerce/repository/products/product.go:64.53,66.3 1 0
