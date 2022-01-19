@@ -70,6 +70,7 @@ func (uc UsersController) RegisterUserCtrl() echo.HandlerFunc {
 			Password:        hash,
 			Name:            newUserReq.Name,
 			HandphoneNumber: newUserReq.HandphoneNumber,
+			Role:            newUserReq.Role,
 		}
 
 		_, err := uc.Repo.Create(newUser)
@@ -100,6 +101,7 @@ func (uc UsersController) UpdateUserCtrl() echo.HandlerFunc {
 			Password:        hash,
 			Name:            updateUserReq.Name,
 			HandphoneNumber: updateUserReq.HandphoneNumber,
+			Role:            updateUserReq.Role,
 		}
 
 		if _, err := uc.Repo.Update(updateUser, id); err != nil {

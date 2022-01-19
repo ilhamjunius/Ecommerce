@@ -5,6 +5,7 @@ type RegisterUserRequestFormat struct {
 	Password        string `json:"password" form:"password"`
 	Name            string `json:"name" form:"name"`
 	HandphoneNumber string `json:"handphonenumber" form:"handphonenumber"`
+	Role            string `json:"role" form:"role"`
 }
 
 type PutUserRequestFormat struct {
@@ -12,4 +13,5 @@ type PutUserRequestFormat struct {
 	Password        string `json:"password" form:"password"`
 	Name            string `json:"name" form:"name"`
 	HandphoneNumber string `json:"handphonenumber" form:"handphonenumber"`
+	Role            string `json:"role" form:"role"`
 }
