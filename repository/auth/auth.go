@@ -3,7 +3,6 @@ package auth
 import (
 	"ecommerce/entities"
 
-	"github.com/labstack/gommon/log"
 	"gorm.io/gorm"
 )
 
@@ -19,7 +18,6 @@ func (ar *AuthRepository) LoginUser(email string, password []byte) (entities.Use
 	var user entities.User
 
 	if err := ar.db.Where("Email = ? AND Password=?", email, password).Find(&user).Error; err != nil {
-		log.Warn("Found database error", err)
 		return user, err
 	}
 

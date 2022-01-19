@@ -21,16 +21,16 @@ func TestUsersRepo(t *testing.T) {
 
 	t.Run("Insert User into Database", func(t *testing.T) {
 		password := sha256.Sum256([]byte("andrew123"))
-		var mockInserUser entities.User
-		mockInserUser.Email = "andrew@yahoo.com"
-		mockInserUser.Password = password[:]
-		mockInserUser.Name = "andrew"
-		mockInserUser.HandphoneNumber = "0123456789"
-		mockInserUser.Role = "admin"
+		var mockUser entities.User
+		mockUser.Email = "andrew@yahoo.com"
+		mockUser.Password = password[:]
+		mockUser.Name = "andrew"
+		mockUser.HandphoneNumber = "0123456789"
+		mockUser.Role = "admin"
 
-		res, err := userRepo.Create(mockInserUser)
+		res, err := userRepo.Create(mockUser)
 		assert.Nil(t, err)
-		assert.Equal(t, mockInserUser.Name, res.Name)
+		assert.Equal(t, mockUser.Name, res.Name)
 		assert.Equal(t, 1, int(res.ID))
 
 	})
@@ -49,16 +49,16 @@ func TestUsersRepo(t *testing.T) {
 
 	t.Run("Update User ", func(t *testing.T) {
 		password := sha256.Sum256([]byte("ilham123"))
-		var mockUpdateUser entities.User
-		mockUpdateUser.Email = "ilham@yahoo.com"
-		mockUpdateUser.Password = password[:]
-		mockUpdateUser.Name = "ilham"
-		mockUpdateUser.HandphoneNumber = "987654321"
-		mockUpdateUser.Role = "pembeli"
+		var mockUser entities.User
+		mockUser.Email = "ilham@yahoo.com"
+		mockUser.Password = password[:]
+		mockUser.Name = "ilham"
+		mockUser.HandphoneNumber = "987654321"
+		mockUser.Role = "pembeli"
 
-		res, err := userRepo.Update(mockUpdateUser, 1)
+		res, err := userRepo.Update(mockUser, 1)
 		assert.Nil(t, err)
-		assert.Equal(t, mockUpdateUser.Name, res.Name)
+		assert.Equal(t, mockUser.Name, res.Name)
 	})
 
 	t.Run("Delete User", func(t *testing.T) {
@@ -69,38 +69,38 @@ func TestUsersRepo(t *testing.T) {
 
 	t.Run("Insert User into Database", func(t *testing.T) {
 		password := sha256.Sum256([]byte("andrew123"))
-		var mockInsertUser entities.User
-		mockInsertUser.Email = "andrew@yahoo.com"
-		mockInsertUser.Password = password[:]
-		mockInsertUser.Name = "andrew"
-		mockInsertUser.HandphoneNumber = "0123456789"
-		mockInsertUser.Role = "admin"
+		var mockUser entities.User
+		mockUser.Email = "andrew@yahoo.com"
+		mockUser.Password = password[:]
+		mockUser.Name = "andrew"
+		mockUser.HandphoneNumber = "0123456789"
+		mockUser.Role = "admin"
 
-		res, err := userRepo.Create(mockInsertUser)
+		res, err := userRepo.Create(mockUser)
 		assert.Nil(t, err)
-		assert.Equal(t, mockInsertUser.Name, res.Name)
+		assert.Equal(t, mockUser.Name, res.Name)
 		assert.Equal(t, 2, int(res.ID))
 	})
 
 	t.Run("Update User ", func(t *testing.T) {
 		password := sha256.Sum256([]byte("ilham123"))
-		var mockUpdateUser entities.User
-		mockUpdateUser.Email = "ilham@yahoo.com"
-		mockUpdateUser.Password = password[:]
-		mockUpdateUser.Name = "ilham"
-		mockUpdateUser.HandphoneNumber = "987654321"
-		mockUpdateUser.Role = "pembeli"
+		var mockUser entities.User
+		mockUser.Email = "ilham@yahoo.com"
+		mockUser.Password = password[:]
+		mockUser.Name = "ilham"
+		mockUser.HandphoneNumber = "987654321"
+		mockUser.Role = "pembeli"
 
-		res, err := userRepo.Create(mockUpdateUser)
+		res, err := userRepo.Create(mockUser)
 		assert.Nil(t, err)
-		assert.Equal(t, mockUpdateUser.Name, res.Name)
+		assert.Equal(t, mockUser.Name, res.Name)
 	})
 
 	// t.Run("Error Data Update User ", func(t *testing.T) {
-	// 	var mockUpdateUser entities.User
-	// 	mockUpdateUser.Email = "andrew@yahoo.com"
+	// 	var mockUser entities.User
+	// 	mockUser.Email = "andrew@yahoo.com"
 
-	// 	_, err := userRepo.Update(mockUpdateUser, 3)
+	// 	_, err := userRepo.Update(mockUser, 3)
 	// 	assert.NotNil(t, err)
 	// })
 
