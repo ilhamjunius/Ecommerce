@@ -24,16 +24,8 @@ func (pr *ProductRepository) GetAll() ([]entities.Product, error) {
 	return Products, nil
 }
 
-func (pr *ProductRepository) Get(productId int) (entities.Product, error) {
-	Product := entities.Product{}
-	if err := pr.db.Find(&Product, productId).Error; err != nil {
-		log.Warn("Found database error", err)
-		return Product, err
-	}
-	return Product, nil
-}
-
 func (pr *ProductRepository) Create(newProduct entities.Product) (entities.Product, error) {
+
 	if err := pr.db.Save(&newProduct).Error; err != nil {
 		log.Warn("Found database error", err)
 		return newProduct, err
@@ -43,13 +35,18 @@ func (pr *ProductRepository) Create(newProduct entities.Product) (entities.Produ
 
 func (pr *ProductRepository) Update(newProduct entities.Product, productId int) (entities.Product, error) {
 	product := entities.Product{}
-	if err := pr.db.Find(&product, "id=?", productId).Error; err != nil {
+	if err := pr.db.First(&product, "id=?", productId).Error; err != nil {
 		return newProduct, err
 	}
+	err := pr.db.Model(&product).Updates(entities.Product{
+		Name:        newProduct.Name,
+		Price:       newProduct.Price,
+		Stock:       newProduct.Stock,
+		CategoryID:  newProduct.CategoryID,
+		Description: newProduct.Description,
+	}).Error
 
-	product = newProduct
-
-	if err := pr.db.Save(&product).Error; err != nil {
+	if err != nil {
 		return newProduct, err
 	}
 
