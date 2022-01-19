@@ -1,5 +1,7 @@
 package common
 
+import "net/http"
+
 //DefaultResponse default payload response
 type DefaultResponse struct {
 	Code    int    `json:"code"`
@@ -9,7 +11,7 @@ type DefaultResponse struct {
 //NewInternalServerErrorResponse default internal server error response
 func NewSuccessOperationResponse() DefaultResponse {
 	return DefaultResponse{
-		200,
+		http.StatusOK,
 		"Successful Operation",
 	}
 }
@@ -17,7 +19,7 @@ func NewSuccessOperationResponse() DefaultResponse {
 //NewInternalServerErrorResponse default internal server error response
 func NewInternalServerErrorResponse() DefaultResponse {
 	return DefaultResponse{
-		500,
+		http.StatusInternalServerError,
 		"Internal Server Error",
 	}
 }
@@ -25,7 +27,7 @@ func NewInternalServerErrorResponse() DefaultResponse {
 //NewNotFoundResponse default not found error response
 func NewNotFoundResponse() DefaultResponse {
 	return DefaultResponse{
-		404,
+		http.StatusNotFound,
 		"Not Found",
 	}
 }
@@ -33,7 +35,7 @@ func NewNotFoundResponse() DefaultResponse {
 //NewBadRequestResponse default bad request error response
 func NewBadRequestResponse() DefaultResponse {
 	return DefaultResponse{
-		400,
+		http.StatusBadRequest,
 		"Bad Request",
 	}
 }
@@ -41,7 +43,7 @@ func NewBadRequestResponse() DefaultResponse {
 //NewConflictResponse default conflict response error response
 func NewConflictResponse() DefaultResponse {
 	return DefaultResponse{
-		409,
+		http.StatusConflict,
 		"Data Has Been Modified",
 	}
 }
@@ -49,7 +51,14 @@ func NewConflictResponse() DefaultResponse {
 //NewStatusNotAccepted default not
 func NewStatusNotAcceptable() DefaultResponse {
 	return DefaultResponse{
-		406,
+		http.StatusNotAcceptable,
 		"Not Accepted",
+	}
+}
+
+func NewStatusNotAuthorized() DefaultResponse {
+	return DefaultResponse{
+		http.StatusUnauthorized,
+		"Not Authorized",
 	}
 }
