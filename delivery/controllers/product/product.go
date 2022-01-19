@@ -4,7 +4,6 @@ import (
 	"ecommerce/delivery/common"
 	"ecommerce/entities"
 	product "ecommerce/repository/products"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -31,8 +30,23 @@ func (pc ProductController) GetAllProductCtrl() echo.HandlerFunc {
 		}
 		return c.JSON(http.StatusOK, response)
 	}
-
 }
+
+func (pc ProductController) GetProductCtrl() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		id, err := strconv.Atoi(c.Param("id"))
+		product, err := pc.Repo.Get(id)
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
+		}
+		response := ProductResponseFormat{
+			Message: "Successful Operation",
+			Data:    product,
+		}
+		return c.JSON(http.StatusOK, response)
+	}
+}
+
 func (pc ProductController) CreateProductControllers() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		newProductreq := ProductRequestFormat{}
@@ -54,15 +68,13 @@ func (pc ProductController) CreateProductControllers() echo.HandlerFunc {
 			Message: "success create new product",
 			Data:    res,
 		})
-
 	}
-
 }
+
 func (pc ProductController) UpdateProductCtrl() echo.HandlerFunc {
 
 	return func(c echo.Context) error {
 		id, err := strconv.Atoi(c.Param("id"))
-		fmt.Println(id)
 		if err != nil {
 			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
 		}

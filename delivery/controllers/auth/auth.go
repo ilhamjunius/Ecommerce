@@ -35,7 +35,7 @@ func (authcon AuthController) LoginAuthCtrl() echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
 		}
 
-		token, err := CreateTokenAuth(checkedUser.ID)
+		token, err := CreateTokenAuth(checkedUser.ID, checkedUser.Role)
 		if err != nil {
 			return c.JSON(http.StatusNotAcceptable, common.NewStatusNotAcceptable())
 		}
@@ -48,10 +48,11 @@ func (authcon AuthController) LoginAuthCtrl() echo.HandlerFunc {
 	}
 }
 
-func CreateTokenAuth(id uint) (string, error) {
+func CreateTokenAuth(id uint, role string) (string, error) {
 	claims := jwt.MapClaims{}
 	claims["authorized"] = true
 	claims["userid"] = id
+	claims["role"] = role
 	claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte("RAHASIA"))
