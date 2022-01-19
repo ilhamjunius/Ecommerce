@@ -69,7 +69,7 @@ func (uc UsersController) RegisterUserCtrl() echo.HandlerFunc {
 
 		newUser := entities.User{
 			Email:           newUserReq.Email,
-			Password:        hash,
+			Password:        hash[:],
 			Name:            newUserReq.Name,
 			HandphoneNumber: newUserReq.HandphoneNumber,
 			Role:            newUserReq.Role,
@@ -106,7 +106,7 @@ func (uc UsersController) UpdateUserCtrl() echo.HandlerFunc {
 
 		updateUser := entities.User{
 			Email:           updateUserReq.Email,
-			Password:        hash,
+			Password:        hash[:],
 			Name:            updateUserReq.Name,
 			HandphoneNumber: updateUserReq.HandphoneNumber,
 			Role:            updateUserReq.Role,
