@@ -30,7 +30,7 @@ func (authcon AuthController) LoginAuthCtrl() echo.HandlerFunc {
 
 		hash := sha256.Sum256([]byte(loginFormat.Password))
 
-		checkedUser, err := authcon.Repo.LoginUser(loginFormat.Email, hash)
+		checkedUser, err := authcon.Repo.LoginUser(loginFormat.Email, hash[:])
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
 		}

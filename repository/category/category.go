@@ -27,7 +27,7 @@ func (cr *CategoryRepository) GetAll() ([]entities.Category, error) {
 
 func (cr *CategoryRepository) Get(categoryId int) (entities.Category, error) {
 	category := entities.Category{}
-	if err := cr.db.Find(&category, categoryId).Error; err != nil {
+	if err := cr.db.First(&category, categoryId).Error; err != nil {
 		log.Warn("Found database error", err)
 		return category, err
 	}
@@ -47,11 +47,13 @@ func (cr *CategoryRepository) Update(newCategory entities.Category, categoryId i
 		return newCategory, err
 	}
 
-	category = newCategory
+	category.CategoryType = newCategory.CategoryType
 
-	if err := cr.db.Save(&category).Error; err != nil {
+	if err := cr.db.Find(&category, "category_type=?", newCategory.CategoryType).Error; err != nil {
 		return newCategory, err
 	}
+
+	cr.db.Save(&category)
 
 	return newCategory, nil
 }
