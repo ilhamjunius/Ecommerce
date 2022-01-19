@@ -53,9 +53,9 @@ func (ur *UserRepository) Update(newUser entities.User, userId int) (entities.Us
 	user.HandphoneNumber = newUser.HandphoneNumber
 	user.Role = newUser.Role
 
-	if err := ur.db.Find(&user, "email=?", user.Email).Error; err != nil {
-		return newUser, err
-	}
+	// if err := ur.db.Find(&user, "email=?", user.Email).Error; err != nil {
+	// 	return newUser, err
+	// }
 
 	ur.db.Save(&user)
 

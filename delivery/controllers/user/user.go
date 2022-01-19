@@ -6,8 +6,8 @@ import (
 	"ecommerce/entities"
 	user "ecommerce/repository/users"
 	"net/http"
-	"strconv"
 
+	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 )
 
@@ -38,11 +38,13 @@ func (uc UsersController) GetAllUsersCtrl() echo.HandlerFunc {
 
 func (uc UsersController) GetUserCtrl() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		id, err := strconv.Atoi(c.Param("id"))
-		if err != nil {
-			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
-		}
-
+		// id, err := strconv.Atoi(c.Param("id"))
+		// if err != nil {
+		// 	return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
+		// }
+		uid := c.Get("user").(*jwt.Token)
+		claims := uid.Claims.(jwt.MapClaims)
+		id := int(claims["userid"].(float64))
 		user, err := uc.Repo.Get(id)
 		if err != nil {
 			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
@@ -92,11 +94,13 @@ func (uc UsersController) RegisterUserCtrl() echo.HandlerFunc {
 func (uc UsersController) UpdateUserCtrl() echo.HandlerFunc {
 
 	return func(c echo.Context) error {
-		id, err := strconv.Atoi(c.Param("id"))
-		if err != nil {
-			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
-		}
-
+		// id, err := strconv.Atoi(c.Param("id"))
+		// if err != nil {
+		// 	return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
+		// }
+		uid := c.Get("user").(*jwt.Token)
+		claims := uid.Claims.(jwt.MapClaims)
+		id := int(claims["userid"].(float64))
 		updateUserReq := PutUserRequestFormat{}
 		if err := c.Bind(&updateUserReq); err != nil {
 			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
@@ -128,12 +132,14 @@ func (uc UsersController) UpdateUserCtrl() echo.HandlerFunc {
 func (uc UsersController) DeleteUserCtrl() echo.HandlerFunc {
 
 	return func(c echo.Context) error {
-		id, err := strconv.Atoi(c.Param("id"))
+		// id, err := strconv.Atoi(c.Param("id"))
 
-		if err != nil {
-			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
-		}
-
+		// if err != nil {
+		// 	return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
+		// }
+		uid := c.Get("user").(*jwt.Token)
+		claims := uid.Claims.(jwt.MapClaims)
+		id := int(claims["userid"].(float64))
 		deletedUser, err := uc.Repo.Delete(id)
 		if err != nil {
 			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
