@@ -1,9 +1,7 @@
 package entities
 
-import "gorm.io/gorm"
-
 type ShoppingCart struct {
-	gorm.Model
+	// gorm.Model
 	//SHOPPINGCARTID AUTO GENERATE
 	ID        uint     `gorm:"primary_key:auto_increment" json:"id" form:"id"`
 	User      User     `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
