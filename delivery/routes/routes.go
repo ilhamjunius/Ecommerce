@@ -2,6 +2,7 @@ package routes
 
 import (
 	"ecommerce/delivery/controllers/auth"
+	"ecommerce/delivery/controllers/category"
 	"ecommerce/delivery/controllers/product"
 	"ecommerce/delivery/controllers/shoppingcart"
 	"ecommerce/delivery/controllers/user"
@@ -10,7 +11,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func RegisterPath(e *echo.Echo, uc *user.UsersController, pc *product.ProductController, sc *shoppingcart.ShoppingCartController, ac *auth.AuthController) {
+func RegisterPath(e *echo.Echo, uc *user.UsersController, pc *product.ProductController, sc *shoppingcart.ShoppingCartController, cc *category.CategoryController, ac *auth.AuthController) {
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.GET("/products", pc.GetAllProductCtrl())
 	e.POST("/products", pc.CreateProductControllers())
@@ -25,6 +26,9 @@ func RegisterPath(e *echo.Echo, uc *user.UsersController, pc *product.ProductCon
 	e.DELETE("/products/:id", pc.DeleteProductCtrl())
 	e.POST("/users/register", uc.RegisterUserCtrl())
 	e.POST("/users/login", ac.LoginAuthCtrl())
+	e.POST("/category", cc.PostCategoryCtrl())
+	e.PUT("/category/:id", cc.UpdateCategoryCtrl())
+	e.DELETE("/category/:id", cc.DeleteCategoryCtrl())
 
 	e.Logger.Fatal(e.Start(":8000"))
 
