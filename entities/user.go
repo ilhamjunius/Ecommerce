@@ -10,5 +10,6 @@ type User struct {
 	Password        [32]byte `gorm:"not null" json:"password" form:"password"`
 	Name            string   `json:"name" form:"name"`
 	HandphoneNumber string   `json:"no_hp" form:"no_hp"`
+	Role            string   `json:"role" form:"role"`
 	Order           []Order  `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 }
