@@ -33,10 +33,10 @@ func (or *OrderRepository) Get(orderId, userId int) (entities.Order, error) {
 	return order, nil
 }
 
-func (or *OrderRepository) Create(newOrder entities.Order) (entities.Order, error) {
-	if err := or.db.Save(&newOrder).Error; err != nil {
-		return newOrder, err
-	}
+func (or *OrderRepository) Create(newOrder entities.Order, orderId int) (entities.Order, error) {
+	order := entities.Order{}
+	or.db.Table("shoppingcart").Select("order_id,user_id,sum(subtotal) as total").Where("order_id LIKE ?", orderId).Group("order_id").First(&order)
+
 	return newOrder, nil
 }
 
