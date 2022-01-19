@@ -3,8 +3,8 @@ package user
 import "ecommerce/entities"
 
 type RegisterUserResponseFormat struct {
-	Message string          `json:"message"`
-	Data    []entities.User `json:"data"`
+	Message string        `json:"message"`
+	Data    entities.User `json:"data"`
 }
 
 type LoginUserResponseFormat struct {

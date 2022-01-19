@@ -22,14 +22,14 @@ func NewUsersControllers(ui user.UserInterface) *UsersController {
 func (uc UsersController) GetAllUsersCtrl() echo.HandlerFunc {
 
 	return func(c echo.Context) error {
-		user, err := uc.Repo.GetAll()
+		users, err := uc.Repo.GetAll()
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
 		}
 
 		response := GetUsersResponseFormat{
 			Message: "Successful Operation",
-			Data:    user,
+			Data:    users,
 		}
 
 		return c.JSON(http.StatusOK, response)
@@ -48,10 +48,12 @@ func (uc UsersController) GetUserCtrl() echo.HandlerFunc {
 			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
 		}
 
-		return c.JSON(http.StatusOK, map[string]interface{}{
-			"message": "success",
-			"data":    user,
-		})
+		response := GetUserResponseFormat{
+			Message: "Successful Operation",
+			Data:    user,
+		}
+
+		return c.JSON(http.StatusOK, response)
 	}
 }
 
@@ -77,7 +79,13 @@ func (uc UsersController) RegisterUserCtrl() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
 		}
-		return c.JSON(http.StatusOK, common.NewSuccessOperationResponse())
+
+		response := RegisterUserResponseFormat{
+			Message: "Successful Operation",
+			Data:    newUser,
+		}
+
+		return c.JSON(http.StatusOK, response)
 	}
 }
 
@@ -107,7 +115,13 @@ func (uc UsersController) UpdateUserCtrl() echo.HandlerFunc {
 		if _, err := uc.Repo.Update(updateUser, id); err != nil {
 			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
 		}
-		return c.JSON(http.StatusOK, common.NewSuccessOperationResponse())
+
+		response := PutUserResponseFormat{
+			Message: "Successful Operation",
+			Data:    updateUser,
+		}
+
+		return c.JSON(http.StatusOK, response)
 	}
 }
 
@@ -120,12 +134,16 @@ func (uc UsersController) DeleteUserCtrl() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
 		}
 
-		deletedUser, _ := uc.Repo.Delete(id)
-
-		if deletedUser.ID != 0 {
-			return c.JSON(http.StatusOK, common.NewSuccessOperationResponse())
-		} else {
+		deletedUser, err := uc.Repo.Delete(id)
+		if err != nil {
 			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
 		}
+
+		response := DeleteUserResponseFormat{
+			Message: "Successful Operation",
+			Data:    deletedUser,
+		}
+
+		return c.JSON(http.StatusOK, response)
 	}
 }
