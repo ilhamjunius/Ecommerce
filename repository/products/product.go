@@ -40,7 +40,7 @@ func (pr *ProductRepository) Create(newProduct entities.Product) (entities.Produ
 
 func (pr *ProductRepository) Update(newProduct entities.Product, productId int) (entities.Product, error) {
 	product := entities.Product{}
-	if err := pr.db.Find(&product, "id=?", productId).Error; err != nil {
+	if err := pr.db.First(&product, "id=?", productId).Error; err != nil {
 		return newProduct, err
 	}
 
