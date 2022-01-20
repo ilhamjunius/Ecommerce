@@ -14,15 +14,6 @@ func NewUserRepo(db *gorm.DB) *UserRepository {
 	return &UserRepository{db: db}
 }
 
-func (ur *UserRepository) GetAll() ([]entities.User, error) {
-	users := []entities.User{}
-	if err := ur.db.Find(&users).Error; err != nil {
-		return nil, err
-	}
-
-	return users, nil
-}
-
 func (ur *UserRepository) Get(userId int) (entities.User, error) {
 	user := entities.User{}
 	if err := ur.db.First(&user, userId).Error; err != nil {
@@ -52,10 +43,6 @@ func (ur *UserRepository) Update(newUser entities.User, userId int) (entities.Us
 	user.Name = newUser.Name
 	user.HandphoneNumber = newUser.HandphoneNumber
 	user.Role = newUser.Role
-
-	// if err := ur.db.Find(&user, "email=?", user.Email).Error; err != nil {
-	// 	return newUser, err
-	// }
 
 	ur.db.Save(&user)
 
