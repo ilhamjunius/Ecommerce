@@ -1,0 +1,18 @@
+mode: set
+ecommerce/repository/orders/order.go:14.49,16.2 1 1
+ecommerce/repository/orders/order.go:18.73,20.77 2 1
+ecommerce/repository/orders/order.go:24.2,24.20 1 0
+ecommerce/repository/orders/order.go:20.77,23.3 2 1
+ecommerce/repository/orders/order.go:27.77,29.94 2 1
+ecommerce/repository/orders/order.go:33.2,33.19 1 0
+ecommerce/repository/orders/order.go:29.94,32.3 2 1
+ecommerce/repository/orders/order.go:53.105,55.94 2 1
+ecommerce/repository/orders/order.go:59.2,61.49 2 0
+ecommerce/repository/orders/order.go:65.2,65.22 1 0
+ecommerce/repository/orders/order.go:55.94,57.3 1 1
+ecommerce/repository/orders/order.go:61.49,63.3 1 0
+ecommerce/repository/orders/order.go:68.80,70.94 2 1
+ecommerce/repository/orders/order.go:73.2,73.51 1 0
+ecommerce/repository/orders/order.go:76.2,76.19 1 0
+ecommerce/repository/orders/order.go:70.94,72.3 1 1
+ecommerce/repository/orders/order.go:73.51,75.3 1 0

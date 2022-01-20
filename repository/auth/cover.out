@@ -1,5 +1,0 @@
-mode: set
-ecommerce/repository/auth/auth.go:13.47,15.2 1 1
-ecommerce/repository/auth/auth.go:17.91,20.99 2 1
-ecommerce/repository/auth/auth.go:24.2,24.18 1 1
-ecommerce/repository/auth/auth.go:20.99,22.3 1 0
