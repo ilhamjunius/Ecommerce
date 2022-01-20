@@ -19,29 +19,25 @@ func NewUsersControllers(ui user.UserInterface) *UsersController {
 	return &UsersController{Repo: ui}
 }
 
-func (uc UsersController) GetAllUsersCtrl() echo.HandlerFunc {
+// func (uc UsersController) GetAllUsersCtrl() echo.HandlerFunc {
 
-	return func(c echo.Context) error {
-		users, err := uc.Repo.GetAll()
-		if err != nil {
-			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
-		}
+// 	return func(c echo.Context) error {
+// 		users, err := uc.Repo.GetAll()
+// 		if err != nil {
+// 			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
+// 		}
 
-		response := GetUsersResponseFormat{
-			Message: "Successful Operation",
-			Data:    users,
-		}
+// 		response := GetUsersResponseFormat{
+// 			Message: "Successful Operation",
+// 			Data:    users,
+// 		}
 
-		return c.JSON(http.StatusOK, response)
-	}
-}
+// 		return c.JSON(http.StatusOK, response)
+// 	}
+// }
 
 func (uc UsersController) GetUserCtrl() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		// id, err := strconv.Atoi(c.Param("id"))
-		// if err != nil {
-		// 	return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
-		// }
 		uid := c.Get("user").(*jwt.Token)
 		claims := uid.Claims.(jwt.MapClaims)
 		id := int(claims["userid"].(float64))
@@ -94,10 +90,6 @@ func (uc UsersController) RegisterUserCtrl() echo.HandlerFunc {
 func (uc UsersController) UpdateUserCtrl() echo.HandlerFunc {
 
 	return func(c echo.Context) error {
-		// id, err := strconv.Atoi(c.Param("id"))
-		// if err != nil {
-		// 	return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
-		// }
 		uid := c.Get("user").(*jwt.Token)
 		claims := uid.Claims.(jwt.MapClaims)
 		id := int(claims["userid"].(float64))
@@ -132,11 +124,6 @@ func (uc UsersController) UpdateUserCtrl() echo.HandlerFunc {
 func (uc UsersController) DeleteUserCtrl() echo.HandlerFunc {
 
 	return func(c echo.Context) error {
-		// id, err := strconv.Atoi(c.Param("id"))
-
-		// if err != nil {
-		// 	return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
-		// }
 		uid := c.Get("user").(*jwt.Token)
 		claims := uid.Claims.(jwt.MapClaims)
 		id := int(claims["userid"].(float64))

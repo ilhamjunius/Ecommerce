@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"ecommerce/constant"
 	"ecommerce/delivery/controllers/auth"
 	"ecommerce/delivery/controllers/category"
 	"ecommerce/delivery/controllers/product"
@@ -15,26 +14,28 @@ import (
 func RegisterPath(e *echo.Echo, uc *user.UsersController, pc *product.ProductController, sc *shoppingcart.ShoppingCartController, cc *category.CategoryController, ac *auth.AuthController) {
 	e.Pre(middleware.RemoveTrailingSlash())
 	auth := e.Group("")
-	auth.Use(middleware.JWT([]byte(constant.JWT_SECRET_KEY)))
+	auth.Use(middleware.JWT([]byte("RAHASIA")))
 	e.GET("/products", pc.GetAllProductCtrl())
 	e.POST("/products", pc.CreateProductControllers())
 	e.PUT("/products/:id", pc.UpdateProductCtrl())
 	e.DELETE("/products/:id", pc.DeleteProductCtrl())
-	e.POST("/shoppingcart", sc.CreateShoppingCartCtrl())
-	e.PUT("/shoppingcart/:id", sc.UpdateShoppingCartCtrl())
-	e.DELETE("/shoppingcart/:id", sc.DeleteShoppingCartCtrl())
+	auth.POST("/shoppingcart", sc.CreateShoppingCartCtrl())
+	auth.PUT("/shoppingcart/", sc.UpdateShoppingCartCtrl())
+	auth.DELETE("/shoppingcart/", sc.DeleteShoppingCartCtrl())
 	e.GET("/products", pc.GetAllProductCtrl())
-	e.POST("/products", pc.CreateProductControllers())
-	e.PUT("/products/:id", pc.UpdateProductCtrl())
-	e.DELETE("/products/:id", pc.DeleteProductCtrl())
+	e.GET("/products/:id", pc.GetProductCtrl())
+	auth.POST("/products", pc.CreateProductControllers())
+	auth.PUT("/products/:id", pc.UpdateProductCtrl())
+	auth.DELETE("/products/:id", pc.DeleteProductCtrl())
 	e.POST("/users/register", uc.RegisterUserCtrl())
 	e.POST("/users/login", ac.LoginAuthCtrl())
 	auth.GET("/users", uc.GetUserCtrl())
 	auth.PUT("/users", uc.UpdateUserCtrl())
 	auth.DELETE("/users", uc.DeleteUserCtrl())
-	e.POST("/category", cc.PostCategoryCtrl())
-	e.PUT("/category/:id", cc.UpdateCategoryCtrl())
-	e.DELETE("/category/:id", cc.DeleteCategoryCtrl())
+	e.GET("/category", cc.GetAllCategoryCtrl())
+	auth.POST("/category", cc.PostCategoryCtrl())
+	auth.PUT("/category/:id", cc.UpdateCategoryCtrl())
+	auth.DELETE("/category/:id", cc.DeleteCategoryCtrl())
 
 	e.Logger.Fatal(e.Start(":8000"))
 

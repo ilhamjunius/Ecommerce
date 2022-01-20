@@ -21,7 +21,13 @@ func (pr *ProductRepository) GetAll() ([]entities.Product, error) {
 	}
 	return Products, nil
 }
-
+func (pr *ProductRepository) filterProduct(name, category string) ([]entities.Product, error) {
+	Products := []entities.Product{}
+	if err := pr.db.Find(&Products).Error; err != nil {
+		return nil, err
+	}
+	return Products, nil
+}
 func (pr *ProductRepository) Get(productId int) (entities.Product, error) {
 	Product := entities.Product{}
 	if err := pr.db.Find(&Product, productId).Error; err != nil {
@@ -57,11 +63,8 @@ func (pr *ProductRepository) Update(newProduct entities.Product, productId int) 
 
 func (pr *ProductRepository) Delete(productId int) (entities.Product, error) {
 	product := entities.Product{}
-	if err := pr.db.Find(&product, "id=?", productId).Error; err != nil {
-		return product, err
-	}
 
-	if err := pr.db.Delete(&product).Error; err != nil {
+	if err := pr.db.Delete(&product, productId).Error; err != nil {
 		return product, err
 	}
 
