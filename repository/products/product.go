@@ -16,15 +16,20 @@ func NewProductRepo(db *gorm.DB) *ProductRepository {
 
 func (pr *ProductRepository) GetAll() ([]entities.Product, error) {
 	Products := []entities.Product{}
-	if err := pr.db.Find(&Products).Error; err != nil {
-		return nil, err
+	// if err := pr.db.Find(&Products).Error; err != nil {
+	// 	return nil, err
+	// }
+	keyword := "sapu%"
+	if err := pr.db.Where("Name like ?", keyword).Find(&Products).Error; err != nil {
+		return Products, err
 	}
 	return Products, nil
 }
-func (pr *ProductRepository) filterProduct(name, category string) ([]entities.Product, error) {
+func (pr *ProductRepository) FilterProduct(keyword, category string) ([]entities.Product, error) {
 	Products := []entities.Product{}
-	if err := pr.db.Find(&Products).Error; err != nil {
-		return nil, err
+	keywordd := "sapu"
+	if err := pr.db.Where("Name like ?", keywordd+"%").Find(&Products).Error; err != nil {
+		return Products, err
 	}
 	return Products, nil
 }

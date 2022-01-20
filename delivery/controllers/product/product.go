@@ -21,7 +21,23 @@ func NewProductControllers(pi product.ProductInterface) *ProductController {
 
 func (pc ProductController) GetAllProductCtrl() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		product, err := pc.Repo.GetAll()
+		product, err := pc.Repo.GetAll("sapu%")
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
+		}
+		response := GetAllProductsResponseFormat{
+			Message: "Successful Operation",
+			Data:    product,
+		}
+		return c.JSON(http.StatusOK, response)
+	}
+}
+func (pc ProductController) FilterProductCtrl() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		// keyword := c.Param("keyword")
+		// log.Println("keyword:", keyword)
+		keyword := c.FormValue("keyword")
+		product, err := pc.Repo.FilterProduct(keyword, "asdd")
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
 		}

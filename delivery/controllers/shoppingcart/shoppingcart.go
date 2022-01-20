@@ -5,6 +5,7 @@ import (
 	"ecommerce/entities"
 	"ecommerce/repository/shoppingcart"
 	"net/http"
+	"strconv"
 
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
@@ -51,19 +52,21 @@ func (sc ShoppingCartController) UpdateShoppingCartCtrl() echo.HandlerFunc {
 
 	return func(c echo.Context) error {
 
-		// id, err := strconv.Atoi(c.Param("id"))
-		// if err != nil {
-		// 	return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
-		// }
+		id, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
+		}
 		uid := c.Get("user").(*jwt.Token)
 		claims := uid.Claims.(jwt.MapClaims)
-		id := int(claims["userid"].(float64))
+		idToken := int(claims["userid"].(float64))
 
 		updateShoppingCartReq := ShoppingCartRequestFormat{}
 		if err := c.Bind(&updateShoppingCartReq); err != nil {
 			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
 		}
-
+		if idToken != int(updateShoppingCartReq.UserId) {
+			return c.JSON(http.StatusUnauthorized, common.NewStatusNotAuthorized())
+		}
 		updateShopingCart := entities.ShoppingCart{
 			Qty:     updateShoppingCartReq.Qty,
 			OrderId: updateShoppingCartReq.OrderId,
@@ -79,13 +82,19 @@ func (sc ShoppingCartController) UpdateShoppingCartCtrl() echo.HandlerFunc {
 func (sc ShoppingCartController) DeleteShoppingCartCtrl() echo.HandlerFunc {
 
 	return func(c echo.Context) error {
+		id, err := strconv.Atoi(c.Param("id"))
 
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
+		}
 		uid := c.Get("user").(*jwt.Token)
 		claims := uid.Claims.(jwt.MapClaims)
-		id := int(claims["userid"].(float64))
+		idToken := int(claims["userid"].(float64))
 
 		deletedShoppingCart, _ := sc.Repo.Delete(id)
-
+		if idToken != int(deletedShoppingCart.UserID) {
+			return c.JSON(http.StatusUnauthorized, common.NewStatusNotAuthorized())
+		}
 		if deletedShoppingCart.ID != 0 {
 			return c.JSON(http.StatusOK, common.NewSuccessOperationResponse())
 		} else {

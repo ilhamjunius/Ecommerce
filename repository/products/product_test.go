@@ -34,7 +34,7 @@ func TestProductRepo(t *testing.T) {
 	})
 
 	t.Run("Select Products from Database", func(t *testing.T) {
-		res, err := productRepo.GetAll()
+		res, err := productRepo.GetAll("sapu")
 		assert.Nil(t, err)
 		assert.Equal(t, res, res)
 	})
@@ -52,7 +52,7 @@ func TestProductRepo(t *testing.T) {
 	})
 
 	t.Run("Error Select Products from Database", func(t *testing.T) {
-		_, err := productRepo.GetAll()
+		_, err := productRepo.GetAll("sapu%")
 		assert.Error(t, err)
 	})
 
