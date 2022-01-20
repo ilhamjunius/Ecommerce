@@ -31,6 +31,18 @@ func (or *OrderRepository) Get(orderId, userId int) (entities.Order, error) {
 }
 
 func (or *OrderRepository) Create(newOrder entities.Order) (entities.Order, error) {
+	shoppingcart := []entities.ShoppingCart{}
+	if err := or.db.Where("order_id=?", newOrder.ID).Find(&shoppingcart).Error; err != nil {
+		return newOrder, err
+	}
+
+	total := 0
+	for a := 0; a < len(shoppingcart); a++ {
+		total += shoppingcart[a].Subtotal
+	}
+
+	newOrder.Total = total
+
 	if err := or.db.Save(&newOrder).Error; err != nil {
 		return newOrder, err
 	}
