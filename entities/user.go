@@ -8,5 +8,5 @@ type User struct {
 	HandphoneNumber string         `json:"no_hp" form:"no_hp"`
 	Role            string         `json:"role" form:"role"`
 	Order           []Order        `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	ShoppingCart    []ShoppingCart `gorm:"-"`
+	ShoppingCart    []ShoppingCart `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 }

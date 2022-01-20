@@ -1,44 +1,35 @@
 package order
 
-import (
-	"ecommerce/configs"
-	"ecommerce/entities"
-	"ecommerce/utils"
-	"testing"
+// func TestProductRepo(t *testing.T) {
+// 	config := configs.GetConfig()
+// 	db := utils.InitDB(config)
 
-	"github.com/stretchr/testify/assert"
-)
+// 	db.AutoMigrate(&entities.Order{})
 
-func TestProductRepo(t *testing.T) {
-	config := configs.GetConfig()
-	db := utils.InitDB(config)
+// 	orderRepo := NewOrderRepo(db)
 
-	db.AutoMigrate(&entities.Order{})
+// 	db.Migrator().DropTable(&entities.Order{})
+// 	t.Run("Error Delete User", func(t *testing.T) {
+// 		_, err := orderRepo.Delete(1, 1)
+// 		assert.Error(t, err)
 
-	orderRepo := NewOrderRepo(db)
+// 	})
+// 	t.Run("Error Update User", func(t *testing.T) {
+// 		var mockProduct entities.Order
+// 		_, err := orderRepo.Update(mockProduct, 1, 1)
+// 		assert.Error(t, err)
 
-	db.Migrator().DropTable(&entities.Order{})
-	t.Run("Error Delete User", func(t *testing.T) {
-		_, err := orderRepo.Delete(1, 1)
-		assert.Error(t, err)
+// 	})
+// 	t.Run("Error Select Product from Database", func(t *testing.T) {
+// 		_, err := orderRepo.Get(1, 1)
+// 		assert.Error(t, err)
 
-	})
-	t.Run("Error Update User", func(t *testing.T) {
-		var mockProduct entities.Order
-		_, err := orderRepo.Update(mockProduct, 1, 1)
-		assert.Error(t, err)
+// 	})
+// 	t.Run("Error Select Product from Database", func(t *testing.T) {
+// 		_, err := orderRepo.GetAll(1)
+// 		assert.Error(t, err)
 
-	})
-	t.Run("Error Select Product from Database", func(t *testing.T) {
-		_, err := orderRepo.Get(1, 1)
-		assert.Error(t, err)
+// 	})
+// 	db.AutoMigrate(&entities.Order{})
 
-	})
-	t.Run("Error Select Product from Database", func(t *testing.T) {
-		_, err := orderRepo.GetAll(1)
-		assert.Error(t, err)
-
-	})
-	db.AutoMigrate(&entities.Order{})
-
-}
+// }
