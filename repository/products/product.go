@@ -14,12 +14,12 @@ func NewProductRepo(db *gorm.DB) *ProductRepository {
 	return &ProductRepository{db: db}
 }
 
-func (pr *ProductRepository) GetAll() ([]entities.Product, error) {
+func (pr *ProductRepository) GetAll(keyword string) ([]entities.Product, error) {
 	Products := []entities.Product{}
 	// if err := pr.db.Find(&Products).Error; err != nil {
 	// 	return nil, err
 	// }
-	keyword := "sapu%"
+	// keyword := "sapu%"
 	if err := pr.db.Where("Name like ?", keyword).Find(&Products).Error; err != nil {
 		return Products, err
 	}

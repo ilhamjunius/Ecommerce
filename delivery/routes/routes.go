@@ -3,6 +3,7 @@ package routes
 import (
 	"ecommerce/delivery/controllers/auth"
 	"ecommerce/delivery/controllers/category"
+	"ecommerce/delivery/controllers/order"
 	"ecommerce/delivery/controllers/product"
 	"ecommerce/delivery/controllers/shoppingcart"
 	"ecommerce/delivery/controllers/user"
@@ -11,7 +12,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func RegisterPath(e *echo.Echo, uc *user.UsersController, pc *product.ProductController, sc *shoppingcart.ShoppingCartController, cc *category.CategoryController, ac *auth.AuthController) {
+func RegisterPath(e *echo.Echo, uc *user.UsersController, pc *product.ProductController, sc *shoppingcart.ShoppingCartController, cc *category.CategoryController, oc *order.OrderController, ac *auth.AuthController) {
 	e.Pre(middleware.RemoveTrailingSlash())
 	auth := e.Group("")
 	auth.Use(middleware.JWT([]byte("RAHASIA")))
@@ -37,6 +38,10 @@ func RegisterPath(e *echo.Echo, uc *user.UsersController, pc *product.ProductCon
 	auth.POST("/category", cc.PostCategoryCtrl())
 	auth.PUT("/category/:id", cc.UpdateCategoryCtrl())
 	auth.DELETE("/category/:id", cc.DeleteCategoryCtrl())
+
+	auth.POST("/order", cc.PostCategoryCtrl())
+	auth.PUT("/order/:id", cc.UpdateCategoryCtrl())
+	auth.DELETE("/order/:id", cc.DeleteCategoryCtrl())
 
 	e.Logger.Fatal(e.Start(":8000"))
 

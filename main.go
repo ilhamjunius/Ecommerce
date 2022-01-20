@@ -22,9 +22,7 @@ import (
 )
 
 func main() {
-	data := "sapu"
-	data = data + "%"
-	fmt.Println(data)
+
 	config := configs.GetConfig()
 
 	db := utils.InitDB(config)
