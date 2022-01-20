@@ -28,13 +28,14 @@ func (ur *ShoppingCartRepository) Create(newShoppingcart entities.ShoppingCart) 
 	}
 	return newShoppingcart, nil
 }
-func (ur *ShoppingCartRepository) Update(quantity, cartId int) (entities.ShoppingCart, error) {
+func (ur *ShoppingCartRepository) Update(updateCart entities.ShoppingCart, cartId int) (entities.ShoppingCart, error) {
 	cart := entities.ShoppingCart{}
 	if err := ur.db.Find(&cart, "id=?", cartId).Error; err != nil {
 		return cart, err
 	}
 
-	cart.Qty = quantity
+	cart.Qty = updateCart.Qty
+	cart.Subtotal = updateCart.Subtotal
 
 	if err := ur.db.Save(&cart).Error; err != nil {
 		return cart, err

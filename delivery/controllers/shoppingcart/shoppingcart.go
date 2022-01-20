@@ -25,9 +25,11 @@ func (sc ShoppingCartController) CreateShoppingCartCtrl() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
 		}
 		newShoppingCart := entities.ShoppingCart{
+			OrderId:   newShoppingCartreq.OrderId,
 			UserID:    newShoppingCartreq.UserId,
 			ProductID: newShoppingCartreq.ProductId,
 			Qty:       newShoppingCartreq.Qty,
+			Subtotal:  newShoppingCartreq.Subtotal,
 		}
 		res, err := sc.Repo.Create(newShoppingCart)
 		if err != nil {
