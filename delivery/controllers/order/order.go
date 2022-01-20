@@ -5,7 +5,6 @@ import (
 	"ecommerce/entities"
 	order "ecommerce/repository/orders"
 	"fmt"
-	"log"
 	"net/http"
 	"strconv"
 
@@ -137,13 +136,9 @@ func (oc OrderController) PayOrderCtrl() echo.HandlerFunc {
 		data := invoice.CreateParams{
 			ExternalID: fmt.Sprintf("demoorderID %d", order.ID),
 			Amount:     float64(order.Total),
-			PayerEmail: fmt.Sprintf("%d", order.UserID),
 		}
 
 		resp, err := invoice.Create(&data)
-		if err != nil {
-			log.Fatal(err)
-		}
 
 		res, err := oc.Repo.Pay(resp.ID, resp.InvoiceURL, oid, id)
 		if err != nil {
@@ -182,9 +177,6 @@ func (oc OrderController) CheckOrderCtrl() echo.HandlerFunc {
 		}
 
 		resp, err := invoice.Get(&data)
-		if err != nil {
-			log.Fatal(err)
-		}
 
 		if resp.Status == "PENDING" {
 			res, _ := oc.Repo.Get(oid, id)
