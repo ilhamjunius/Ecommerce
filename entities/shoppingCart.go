@@ -14,7 +14,6 @@ type ShoppingCart struct {
 	OrderId   uint           `gorm:"default:NULL" json:"order_id" form:"order_id"`
 	UserID    uint           `gorm:"not null" json:"user_id" form:"user_id"`
 	ProductID uint           `gorm:"not null" json:"product_id" form:"product_id"`
-	Product   Product        `gorm:"foreignKey:ProductID"`
 	Qty       int            `json:"qty" form:"qty"`
-	Subtotal  uint           `json:"subtotal" form:"subtotal"`
+	Subtotal  int            `json:"subtotal" form:"subtotal"`
 }
