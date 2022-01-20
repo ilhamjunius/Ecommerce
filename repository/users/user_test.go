@@ -49,12 +49,12 @@ func TestUsersRepo(t *testing.T) {
 		// assert.Equal(t, 1, int(res.ID))
 
 	})
-	t.Run("Select Users from Database", func(t *testing.T) {
-		db.AutoMigrate(&entities.User{})
-		res, err := userRepo.GetAll()
-		assert.Nil(t, err)
-		assert.Equal(t, res, res)
-	})
+	// t.Run("Select Users from Database", func(t *testing.T) {
+	// 	db.AutoMigrate(&entities.User{})
+	// 	res, err := userRepo.GetAll()
+	// 	assert.Nil(t, err)
+	// 	assert.Equal(t, res, res)
+	// })
 	t.Run("Insert User into Database", func(t *testing.T) {
 		password := sha256.Sum256([]byte("andrew123"))
 		var mockUser entities.User

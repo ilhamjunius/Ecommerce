@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 )
 
@@ -35,10 +36,15 @@ func (pc ProductController) GetAllProductCtrl() echo.HandlerFunc {
 func (pc ProductController) GetProductCtrl() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		id, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
+		}
+
 		product, err := pc.Repo.Get(id)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
 		}
+
 		response := ProductResponseFormat{
 			Message: "Successful Operation",
 			Data:    product,
@@ -49,6 +55,14 @@ func (pc ProductController) GetProductCtrl() echo.HandlerFunc {
 
 func (pc ProductController) CreateProductControllers() echo.HandlerFunc {
 	return func(c echo.Context) error {
+		uid := c.Get("user").(*jwt.Token)
+		claims := uid.Claims.(jwt.MapClaims)
+		Role := claims["role"]
+
+		if Role != "admin" {
+			return c.JSON(http.StatusBadRequest, common.NewStatusNotAuthorized())
+		}
+
 		newProductreq := ProductRequestFormat{}
 		if err := c.Bind(&newProductreq); err != nil {
 			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
@@ -74,6 +88,14 @@ func (pc ProductController) CreateProductControllers() echo.HandlerFunc {
 func (pc ProductController) UpdateProductCtrl() echo.HandlerFunc {
 
 	return func(c echo.Context) error {
+		uid := c.Get("user").(*jwt.Token)
+		claims := uid.Claims.(jwt.MapClaims)
+		Role := claims["role"]
+
+		if Role != "admin" {
+			return c.JSON(http.StatusBadRequest, common.NewStatusNotAuthorized())
+		}
+
 		id, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
 			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
@@ -101,6 +123,14 @@ func (pc ProductController) UpdateProductCtrl() echo.HandlerFunc {
 func (pc ProductController) DeleteProductCtrl() echo.HandlerFunc {
 
 	return func(c echo.Context) error {
+		uid := c.Get("user").(*jwt.Token)
+		claims := uid.Claims.(jwt.MapClaims)
+		Role := claims["role"]
+
+		if Role != "admin" {
+			return c.JSON(http.StatusBadRequest, common.NewStatusNotAuthorized())
+		}
+
 		id, err := strconv.Atoi(c.Param("id"))
 
 		if err != nil {
