@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"ecommerce/constant"
 	"ecommerce/delivery/controllers/auth"
 	"ecommerce/delivery/controllers/category"
 	"ecommerce/delivery/controllers/product"
@@ -15,7 +14,7 @@ import (
 func RegisterPath(e *echo.Echo, uc *user.UsersController, pc *product.ProductController, sc *shoppingcart.ShoppingCartController, cc *category.CategoryController, ac *auth.AuthController) {
 	e.Pre(middleware.RemoveTrailingSlash())
 	auth := e.Group("")
-	auth.Use(middleware.JWT([]byte(constant.JWT_SECRET_KEY)))
+	auth.Use(middleware.JWT([]byte("RAHASIA")))
 	e.GET("/products", pc.GetAllProductCtrl())
 	e.POST("/products", pc.CreateProductControllers())
 	e.PUT("/products/:id", pc.UpdateProductCtrl())

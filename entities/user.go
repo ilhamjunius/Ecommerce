@@ -1,8 +1,6 @@
 package entities
 
 type User struct {
-	// gorm.Model
-	//USERID AUTO GENERATE
 	ID              uint           `gorm:"primary_key:auto_increment" json:"user_id" form:"user_id"`
 	Email           string         `gorm:"index:,unique" json:"email" form:"email"`
 	Password        []byte         `gorm:"not null" json:"password" form:"password"`
