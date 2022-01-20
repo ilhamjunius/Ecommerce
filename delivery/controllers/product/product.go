@@ -39,7 +39,6 @@ func (pc ProductController) GetProductCtrl() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
 		}
-
 		product, err := pc.Repo.Get(id)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
@@ -64,6 +63,7 @@ func (pc ProductController) CreateProductControllers() echo.HandlerFunc {
 		}
 
 		newProductreq := ProductRequestFormat{}
+
 		if err := c.Bind(&newProductreq); err != nil {
 			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
 		}

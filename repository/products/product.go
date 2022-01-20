@@ -21,7 +21,13 @@ func (pr *ProductRepository) GetAll() ([]entities.Product, error) {
 	}
 	return Products, nil
 }
-
+func (pr *ProductRepository) filterProduct(name, category string) ([]entities.Product, error) {
+	Products := []entities.Product{}
+	if err := pr.db.Find(&Products).Error; err != nil {
+		return nil, err
+	}
+	return Products, nil
+}
 func (pr *ProductRepository) Get(productId int) (entities.Product, error) {
 	Product := entities.Product{}
 	if err := pr.db.Find(&Product, productId).Error; err != nil {
