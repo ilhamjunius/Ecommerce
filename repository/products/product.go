@@ -57,11 +57,8 @@ func (pr *ProductRepository) Update(newProduct entities.Product, productId int) 
 
 func (pr *ProductRepository) Delete(productId int) (entities.Product, error) {
 	product := entities.Product{}
-	if err := pr.db.Find(&product, "id=?", productId).Error; err != nil {
-		return product, err
-	}
 
-	if err := pr.db.Delete(&product).Error; err != nil {
+	if err := pr.db.Delete(&product, productId).Error; err != nil {
 		return product, err
 	}
 

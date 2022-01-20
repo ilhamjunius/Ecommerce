@@ -43,6 +43,7 @@ func (pc ProductController) GetProductCtrl() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
 		}
+
 		response := ProductResponseFormat{
 			Message: "Successful Operation",
 			Data:    product,
@@ -53,13 +54,16 @@ func (pc ProductController) GetProductCtrl() echo.HandlerFunc {
 
 func (pc ProductController) CreateProductControllers() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		newProductreq := ProductRequestFormat{}
 		uid := c.Get("user").(*jwt.Token)
 		claims := uid.Claims.(jwt.MapClaims)
 		Role := claims["role"]
+
 		if Role != "admin" {
 			return c.JSON(http.StatusBadRequest, common.NewStatusNotAuthorized())
 		}
+
+		newProductreq := ProductRequestFormat{}
+
 		if err := c.Bind(&newProductreq); err != nil {
 			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
 		}
@@ -87,9 +91,11 @@ func (pc ProductController) UpdateProductCtrl() echo.HandlerFunc {
 		uid := c.Get("user").(*jwt.Token)
 		claims := uid.Claims.(jwt.MapClaims)
 		Role := claims["role"]
+
 		if Role != "admin" {
 			return c.JSON(http.StatusBadRequest, common.NewStatusNotAuthorized())
 		}
+
 		id, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
 			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
@@ -120,9 +126,11 @@ func (pc ProductController) DeleteProductCtrl() echo.HandlerFunc {
 		uid := c.Get("user").(*jwt.Token)
 		claims := uid.Claims.(jwt.MapClaims)
 		Role := claims["role"]
+
 		if Role != "admin" {
 			return c.JSON(http.StatusBadRequest, common.NewStatusNotAuthorized())
 		}
+
 		id, err := strconv.Atoi(c.Param("id"))
 
 		if err != nil {

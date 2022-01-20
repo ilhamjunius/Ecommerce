@@ -17,19 +17,7 @@ func TestProductRepo(t *testing.T) {
 	db.AutoMigrate(&entities.Product{})
 
 	productRepo := NewProductRepo(db)
-	t.Run("Insert Product into Database", func(t *testing.T) {
-		var mockProduct entities.Product
-		mockProduct.Name = "bola"
-		mockProduct.Price = 10000
-		mockProduct.Stock = 10
-		mockProduct.CategoryID = 2
-		mockProduct.Description = "bola basket"
-		db.Migrator().DropTable(&entities.Product{})
-		_, err := productRepo.Create(mockProduct)
-		assert.Error(t, err)
 
-	})
-	db.AutoMigrate(&entities.Product{})
 	t.Run("Insert Product into Database", func(t *testing.T) {
 		var mockProduct entities.Product
 		mockProduct.Name = "bola"
@@ -50,12 +38,24 @@ func TestProductRepo(t *testing.T) {
 		assert.Nil(t, err)
 		assert.Equal(t, res, res)
 	})
-	db.Migrator().DropTable(&entities.Product{})
+
+	t.Run("Error Insert Product into Database", func(t *testing.T) {
+		var mockProduct entities.Product
+		mockProduct.Name = "bola"
+		mockProduct.Price = 10000
+		mockProduct.Stock = 10
+		mockProduct.CategoryID = 2
+		mockProduct.Description = "bola basket"
+		db.Migrator().DropTable(&entities.Product{})
+		_, err := productRepo.Create(mockProduct)
+		assert.Error(t, err)
+	})
+
 	t.Run("Error Select Products from Database", func(t *testing.T) {
 		_, err := productRepo.GetAll()
 		assert.Error(t, err)
-
 	})
+
 	t.Run("Error Select Product from Database", func(t *testing.T) {
 		_, err := productRepo.Get(1)
 		assert.Error(t, err)
@@ -78,8 +78,9 @@ func TestProductRepo(t *testing.T) {
 		assert.Error(t, err)
 
 	})
-	db.AutoMigrate(&entities.Product{})
+
 	t.Run("Insert Product into Database", func(t *testing.T) {
+		db.AutoMigrate(&entities.Product{})
 		var mockProduct entities.Product
 		mockProduct.Name = "bola"
 		mockProduct.Price = 10000
@@ -117,33 +118,4 @@ func TestProductRepo(t *testing.T) {
 		assert.Nil(t, err)
 		assert.Equal(t, res, res)
 	})
-
-	// t.Run("Insert User into Database", func(t *testing.T) {
-	// 	password := sha256.Sum256([]byte("andrew123"))
-	// 	var mockInsertUser entities.User
-	// 	mockInsertUser.Email = "andrew@yahoo.com"
-	// 	mockInsertUser.Password = password[:]
-	// 	mockInsertUser.Name = "andrew"
-	// 	mockInsertUser.HandphoneNumber = "0123456789"
-	// 	mockInsertUser.Role = "admin"
-
-	// 	res, err := userRepo.Create(mockInsertUser)
-	// 	assert.Nil(t, err)
-	// 	assert.Equal(t, mockInsertUser.Name, res.Name)
-	// 	assert.Equal(t, 2, int(res.ID))
-	// })
-
-	// t.Run("Update User ", func(t *testing.T) {
-	// 	password := sha256.Sum256([]byte("ilham123"))
-	// 	var mockUpdateUser entities.User
-	// 	mockUpdateUser.Email = "ilham@yahoo.com"
-	// 	mockUpdateUser.Password = password[:]
-	// 	mockUpdateUser.Name = "ilham"
-	// 	mockUpdateUser.HandphoneNumber = "987654321"
-	// 	mockUpdateUser.Role = "pembeli"
-
-	// 	res, err := userRepo.Create(mockUpdateUser)
-	// 	assert.Nil(t, err)
-	// 	assert.Equal(t, mockUpdateUser.Name, res.Name)
-	// })
 }
