@@ -118,4 +118,6 @@ func TestProductRepo(t *testing.T) {
 		assert.Nil(t, err)
 		assert.Equal(t, res, res)
 	})
+	db.Migrator().DropTable(&entities.Product{})
+	db.AutoMigrate(&entities.Product{})
 }

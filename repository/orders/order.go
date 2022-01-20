@@ -24,7 +24,7 @@ func (or *OrderRepository) GetAll(userId int) ([]entities.Order, error) {
 
 func (or *OrderRepository) Get(orderId, userId int) (entities.Order, error) {
 	order := entities.Order{}
-	if err := or.db.Find(&order, "order_id=? AND user_id=?", orderId, userId).Error; err != nil {
+	if err := or.db.Find(&order, "id=? AND user_id=?", orderId, userId).Error; err != nil {
 		return order, err
 	}
 	return order, nil
@@ -32,7 +32,7 @@ func (or *OrderRepository) Get(orderId, userId int) (entities.Order, error) {
 
 func (or *OrderRepository) Create(newOrder entities.Order) (entities.Order, error) {
 	shoppingcart := []entities.ShoppingCart{}
-	if err := or.db.Where("order_id=?", newOrder.ID).Find(&shoppingcart).Error; err != nil {
+	if err := or.db.Find(&shoppingcart, "order_id=?", newOrder.ID).Error; err != nil {
 		return newOrder, err
 	}
 
@@ -51,7 +51,7 @@ func (or *OrderRepository) Create(newOrder entities.Order) (entities.Order, erro
 
 func (or *OrderRepository) Cancel(orderId, userId int) (entities.Order, error) {
 	order := entities.Order{}
-	if err := or.db.First(&order, "order_id=? AND user_id=?", orderId, userId).Error; err != nil {
+	if err := or.db.First(&order, "id=? AND user_id=?", orderId, userId).Error; err != nil {
 		return order, err
 	}
 
@@ -66,7 +66,7 @@ func (or *OrderRepository) Cancel(orderId, userId int) (entities.Order, error) {
 
 func (or *OrderRepository) Pay(invoiceId, paymentLink string, orderId, userId int) (entities.Order, error) {
 	order := entities.Order{}
-	if err := or.db.Find(&order, "order_id=? AND user_id=?", orderId, userId).Error; err != nil {
+	if err := or.db.Find(&order, "id=? AND user_id=?", orderId, userId).Error; err != nil {
 		return order, err
 	}
 
@@ -81,7 +81,7 @@ func (or *OrderRepository) Pay(invoiceId, paymentLink string, orderId, userId in
 
 func (or *OrderRepository) Check(orderId, userId int) (entities.Order, error) {
 	order := entities.Order{}
-	if err := or.db.Find(&order, "order_id=? AND user_id=?", orderId, userId).Error; err != nil {
+	if err := or.db.Find(&order, "id=? AND user_id=?", orderId, userId).Error; err != nil {
 		return order, err
 	}
 
