@@ -16,11 +16,12 @@ func NewProductRepo(db *gorm.DB) *ProductRepository {
 
 func (pr *ProductRepository) GetAll(keyword string) ([]entities.Product, error) {
 	Products := []entities.Product{}
+	// Category:=
 	// if err := pr.db.Find(&Products).Error; err != nil {
 	// 	return nil, err
 	// }
-	// keyword := "sapu%"
-	if err := pr.db.Where("Name like ?", keyword).Find(&Products).Error; err != nil {
+	// pr.db
+	if err := pr.db.Where("Name like ? and ", "%"+keyword+"%").Find(&Products).Error; err != nil {
 		return Products, err
 	}
 	return Products, nil
