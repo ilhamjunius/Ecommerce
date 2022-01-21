@@ -30,9 +30,9 @@ func (or *OrderRepository) Get(orderId, userId int) (entities.Order, error) {
 	return order, nil
 }
 
-func (or *OrderRepository) Create(newOrder entities.Order) (entities.Order, error) {
+func (or *OrderRepository) Create(newOrder entities.Order, arr []int) (entities.Order, error) {
 	shoppingcart := []entities.ShoppingCart{}
-	if err := or.db.Find(&shoppingcart, "order_id=?", newOrder.ID).Error; err != nil {
+	if err := or.db.Find(&shoppingcart, "id in ?", arr).Error; err != nil {
 		return newOrder, err
 	}
 
