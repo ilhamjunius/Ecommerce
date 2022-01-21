@@ -102,6 +102,6 @@ func TestCategoryRepo(t *testing.T) {
 		db.Migrator().DropTable(&entities.Category{})
 		_, err := categoryRepo.Delete(1)
 		assert.Error(t, err)
-
 	})
+	db.AutoMigrate(&entities.Category{})
 }

@@ -19,23 +19,6 @@ func NewUsersControllers(ui user.UserInterface) *UsersController {
 	return &UsersController{Repo: ui}
 }
 
-// func (uc UsersController) GetAllUsersCtrl() echo.HandlerFunc {
-
-// 	return func(c echo.Context) error {
-// 		users, err := uc.Repo.GetAll()
-// 		if err != nil {
-// 			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
-// 		}
-
-// 		response := GetUsersResponseFormat{
-// 			Message: "Successful Operation",
-// 			Data:    users,
-// 		}
-
-// 		return c.JSON(http.StatusOK, response)
-// 	}
-// }
-
 func (uc UsersController) GetUserCtrl() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		uid := c.Get("user").(*jwt.Token)
