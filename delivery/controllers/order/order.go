@@ -184,7 +184,7 @@ func (oc OrderController) CheckOrderCtrl() echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
 		}
 
-		if order.Status == "Cancel" {
+		if order.Status == "Cancel" || order.Status == "Open" {
 			response := GetOrderResponseFormat{
 				Message: "Successful Operation",
 				Data:    order,

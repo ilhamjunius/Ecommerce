@@ -32,7 +32,7 @@ func (or *OrderRepository) Get(orderId, userId int) (entities.Order, error) {
 
 func (or *OrderRepository) Create(newOrder entities.Order, arr []int) (entities.Order, error) {
 	shoppingcart := []entities.ShoppingCart{}
-	if err := or.db.Find(&shoppingcart, "id in ?", arr).Error; err != nil {
+	if err := or.db.Find(&shoppingcart, "id in ? AND user_id=?", arr, newOrder.UserID).Error; err != nil {
 		return newOrder, err
 	}
 
@@ -43,9 +43,13 @@ func (or *OrderRepository) Create(newOrder entities.Order, arr []int) (entities.
 
 	newOrder.Total = total
 
-	if err := or.db.Save(&newOrder).Error; err != nil {
-		return newOrder, err
+	//TIDAK AKAN TERSAVE DALAM TABLE ORDER JIKA TOTALNYA 0,IN CASE CUSTOMER MENCOBA MENGISI DENGAN SHOPPING CART ORANG LAIN
+	if newOrder.Total != 0 {
+		if err := or.db.Save(&newOrder).Error; err != nil {
+			return newOrder, err
+		}
 	}
+
 	return newOrder, nil
 }
 
