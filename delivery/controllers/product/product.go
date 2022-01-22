@@ -19,20 +19,6 @@ func NewProductControllers(pi product.ProductInterface) *ProductController {
 	return &ProductController{Repo: pi}
 }
 
-func (pc ProductController) GetAllProductCtrl() echo.HandlerFunc {
-	return func(c echo.Context) error {
-		product, err := pc.Repo.GetAll()
-		if err != nil {
-			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
-		}
-		response := GetAllProductsResponseFormat{
-			Message: "Successful Operation",
-			Data:    product,
-		}
-		return c.JSON(http.StatusOK, response)
-	}
-}
-
 func (pc ProductController) GetProductCtrl() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		id, err := strconv.Atoi(c.Param("id"))
@@ -144,5 +130,35 @@ func (pc ProductController) DeleteProductCtrl() echo.HandlerFunc {
 		} else {
 			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
 		}
+	}
+
+}
+func (pc ProductController) Pagination() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		name := c.QueryParam("name")
+		category := c.QueryParam("category")
+		limit, _ := strconv.Atoi(c.QueryParam("limit"))
+		page, _ := strconv.Atoi(c.QueryParam("page"))
+		sort := c.QueryParam("sort")
+		pagination := entities.Pagination{
+			Limit: limit,
+			Page:  page,
+			Sort:  sort,
+		}
+		product, _ := pc.Repo.Pagination(name, category, pagination)
+
+		if product.Error != nil {
+			return c.JSON(http.StatusBadRequest, PaginationResponseFormat{Error: product.Error})
+		}
+
+		var data = product.Result
+
+		// urlPath := c.Request().RequestURI
+		// urlPath = urlPath[:11]
+
+		return c.JSON(http.StatusOK, PaginationResponseFormat{
+			Message: "Successful Operation",
+			Data:    data,
+		})
 	}
 }

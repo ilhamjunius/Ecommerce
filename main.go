@@ -24,6 +24,7 @@ import (
 )
 
 func main() {
+
 	config := configs.GetConfig()
 
 	db := utils.InitDB(config)
