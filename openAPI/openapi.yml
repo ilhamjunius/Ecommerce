@@ -64,23 +64,6 @@ paths:
         '401':
           $ref: '#/components/responses/UnauthorizedError'
   /users/{userId}:
-    get:
-      security:
-        - bearerAuth: []
-      summary: Get User By ID
-      tags:
-        - Users
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          $ref: '#/components/responses/Response200'
-        '404':
-          $ref: '#/components/responses/Response404'
     put:
       security:
         - bearerAuth: []

@@ -35,7 +35,6 @@ func InitMigrate(db *gorm.DB) {
 	db.AutoMigrate(&entities.Category{})
 	db.AutoMigrate(&entities.User{})
 	db.AutoMigrate(&entities.Product{})
-	// db.AutoMigrate(&entities.Payment{})
 	db.AutoMigrate(&entities.Order{})
 	db.AutoMigrate(&entities.ShoppingCart{})
 
