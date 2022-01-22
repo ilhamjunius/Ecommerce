@@ -38,13 +38,7 @@ func (ur *UserRepository) Update(newUser entities.User, userId int) (entities.Us
 		return newUser, err
 	}
 
-	user.Email = newUser.Email
-	user.Password = newUser.Password
-	user.Name = newUser.Name
-	user.HandphoneNumber = newUser.HandphoneNumber
-	user.Role = newUser.Role
-
-	ur.db.Save(&user)
+	ur.db.Model(&user).Updates(newUser)
 
 	return newUser, nil
 }

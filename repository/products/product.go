@@ -2,6 +2,8 @@ package product
 
 import (
 	"ecommerce/entities"
+	"log"
+	"math"
 
 	"gorm.io/gorm"
 )
@@ -16,12 +18,8 @@ func NewProductRepo(db *gorm.DB) *ProductRepository {
 
 func (pr *ProductRepository) GetAll(keyword string) ([]entities.Product, error) {
 	Products := []entities.Product{}
-	// Category:=
-	// if err := pr.db.Find(&Products).Error; err != nil {
-	// 	return nil, err
-	// }
-	// pr.db
-	if err := pr.db.Where("Name like ? and ", "%"+keyword+"%").Find(&Products).Error; err != nil {
+
+	if err := pr.db.Where("Name like ?", "%"+keyword+"%").Find(&Products).Error; err != nil {
 		return Products, err
 	}
 	return Products, nil
@@ -75,4 +73,60 @@ func (pr *ProductRepository) Delete(productId int) (entities.Product, error) {
 	}
 
 	return product, nil
+}
+
+func (pr *ProductRepository) Pagination(name, category string, pagination entities.Pagination) (ResultPagination, int) {
+
+	var product []entities.Product
+	totalPages, fromRow, toRow := 0, 0, 0
+	var totalRows int64
+
+	categoryJoins := entities.Category{}
+	if err := pr.db.Joins("JOIN products on categories.id=products.category_id").
+		Where("category_type=(?)", category).
+		Find(&categoryJoins).Error; err != nil {
+		log.Fatal(err)
+	}
+	offset := pagination.Page * pagination.Limit
+	if name == "" {
+		errFind := pr.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort).Where("name LIKE ? and category_id=?", "%"+name+"%", categoryJoins.ID).Find(&product).Count(&totalRows).Error
+		if errFind != nil {
+			return ResultPagination{Error: errFind}, totalPages
+		}
+	} else if category == "" {
+		errFind := pr.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort).Where("name LIKE ?", "%"+name+"%").Find(&product).Count(&totalRows).Error
+		if errFind != nil {
+			return ResultPagination{Error: errFind}, totalPages
+		}
+	} else {
+		errFind := pr.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort).Where("name LIKE ? and category_id=?", "%"+name+"%", categoryJoins.ID).Find(&product).Count(&totalRows).Error
+		if errFind != nil {
+			return ResultPagination{Error: errFind}, totalPages
+		}
+	}
+
+	errFind := pr.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort).Where("name LIKE ? and category_id=?", "%"+name+"%", categoryJoins.ID).Find(&product).Error
+	if errFind != nil {
+		return ResultPagination{Error: errFind}, totalPages
+	}
+	pagination.Rows = product
+
+	pagination.TotalRows = int(totalRows)
+	totalPages = int(math.Ceil(float64(totalRows)/float64(pagination.Limit))) - 1
+	if pagination.Page == 0 {
+		fromRow = 1
+		toRow = pagination.Limit
+	} else {
+		if pagination.Page <= totalPages {
+			fromRow = pagination.Page*pagination.Limit + 1
+			toRow = (pagination.Page + 1) * pagination.Limit
+		}
+	}
+	if int64(toRow) > totalRows {
+		toRow = int(totalRows)
+	}
+	pagination.FromRow = fromRow
+	pagination.ToRow = toRow
+	return ResultPagination{Result: pagination}, totalPages
+
 }

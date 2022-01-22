@@ -15,9 +15,9 @@ type ShoppingCartRepository struct {
 func NewShoppingCartRepo(db *gorm.DB) *ShoppingCartRepository {
 	return &ShoppingCartRepository{db: db}
 }
-func (ur *ShoppingCartRepository) Get(userId int) (entities.ShoppingCart, error) {
-	cart := entities.ShoppingCart{}
-	if err := ur.db.Find(&cart, userId).Error; err != nil {
+func (ur *ShoppingCartRepository) Get(userId int) ([]entities.ShoppingCart, error) {
+	cart := []entities.ShoppingCart{}
+	if err := ur.db.Where("user_id = ?", userId).Find(&cart).Error; err != nil {
 		log.Warn("Found database error", err)
 		return cart, err
 	}
@@ -49,16 +49,13 @@ func (ur *ShoppingCartRepository) Create(newShoppingcart entities.ShoppingCart) 
 }
 func (ur *ShoppingCartRepository) Update(updateCart entities.ShoppingCart, cartId int) (entities.ShoppingCart, error) {
 	cart := entities.ShoppingCart{}
-	if err := ur.db.Find(&cart, "id=?", cartId).Error; err != nil {
+	if err := ur.db.First(&cart, "id=?", cartId).Error; err != nil {
 		return cart, err
 	}
 
-	cart.Qty = updateCart.Qty
-	cart.Subtotal = updateCart.Subtotal
-
-	if err := ur.db.Save(&cart).Error; err != nil {
-		return cart, err
-	}
+	// cart.Qty = updateCart.Qty
+	// cart.Subtotal = updateCart.Subtotal
+	ur.db.Model(&cart).Updates(updateCart)
 
 	return cart, nil
 }

@@ -4,10 +4,13 @@ import (
 	"ecommerce/delivery/common"
 	"ecommerce/entities"
 	product "ecommerce/repository/products"
+	"fmt"
 	"net/http"
 	"strconv"
 
 	"github.com/golang-jwt/jwt"
+
+	// "github.com/herusdianto/gorm_crud_example/dtos"
 	"github.com/labstack/echo/v4"
 )
 
@@ -22,6 +25,7 @@ func NewProductControllers(pi product.ProductInterface) *ProductController {
 func (pc ProductController) GetAllProductCtrl() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		keyword := c.QueryParam("keyword")
+
 		// category := c.QueryParam("category")
 		// keyword += "%"
 		// log.Panic("keyword", keyword)
@@ -165,5 +169,65 @@ func (pc ProductController) DeleteProductCtrl() echo.HandlerFunc {
 		} else {
 			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
 		}
+	}
+
+}
+func (pc ProductController) Pagination() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		name := c.QueryParam("name")
+		category := c.QueryParam("category")
+		limit, _ := strconv.Atoi(c.QueryParam("limit"))
+		page, _ := strconv.Atoi(c.QueryParam("page"))
+		sort := c.QueryParam("sort")
+		pagination := entities.Pagination{
+			Limit: limit,
+			Page:  page,
+			Sort:  sort,
+		}
+		product, totalPages := pc.Repo.Pagination(name, category, pagination)
+
+		if product.Error != nil {
+			// return dtos.Response{Success: false, Message: operationResult.Error.Error()}
+			return c.JSON(http.StatusBadRequest, PaginationResponseFormat{Error: product.Error})
+		}
+
+		var data = product.Result
+
+		// get current url path
+		// urlPath := context.Request.URL.Path
+		urlPath := c.Request().RequestURI
+		urlPath = urlPath[:11]
+		// fmt.Println("urlpath:", urlPath[:11])
+		// search query params
+
+		// set first & last page pagination response
+		data.FirstPage = fmt.Sprintf("%s?limit=%d&page=%d&sort=%s", urlPath, pagination.Limit, 0, pagination.Sort)
+		data.LastPage = fmt.Sprintf("%s?limit=%d&page=%d&sort=%s", urlPath, pagination.Limit, totalPages, pagination.Sort)
+
+		if data.Page > 0 {
+			// set previous page pagination response
+			data.PreviousPage = fmt.Sprintf("%s?limit=%d&page=%d&sort=%s", urlPath, pagination.Limit, data.Page-1, pagination.Sort)
+		}
+
+		if data.Page < totalPages {
+			// set next page pagination response
+			data.NextPage = fmt.Sprintf("%s?limit=%d&page=%d&sort=%s", urlPath, pagination.Limit, data.Page+1, pagination.Sort)
+		}
+
+		if data.Page > totalPages {
+			// reset previous page
+			data.PreviousPage = ""
+		}
+
+		// return dtos.Response{Success: true, Data: data}
+
+		// response := GetAllProductsResponseFormat{
+		// 	Message: "Successful Operation",
+		// 	Data:    ,
+		// }
+		return c.JSON(http.StatusOK, PaginationResponseFormat{
+			Message: "Successful Operation",
+			Data:    data,
+		})
 	}
 }

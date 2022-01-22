@@ -18,6 +18,24 @@ type ShoppingCartController struct {
 func NewShoppingCartControllers(si shoppingcart.ShoppingCartInterface) *ShoppingCartController {
 	return &ShoppingCartController{Repo: si}
 }
+func (sc ShoppingCartController) GetShppingCartCtrl() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		uid := c.Get("user").(*jwt.Token)
+		claims := uid.Claims.(jwt.MapClaims)
+		id := int(claims["userid"].(float64))
+
+		shopping_carts, err := sc.Repo.Get(id)
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
+		}
+
+		response := ManyShoppingCartResponseFormat{
+			Message: "Successful Operation",
+			Data:    shopping_carts,
+		}
+		return c.JSON(http.StatusOK, response)
+	}
+}
 
 func (sc ShoppingCartController) CreateShoppingCartCtrl() echo.HandlerFunc {
 	return func(c echo.Context) error {
@@ -40,7 +58,7 @@ func (sc ShoppingCartController) CreateShoppingCartCtrl() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
 		}
-		return c.JSON(http.StatusOK, ProductResponseFormat{
+		return c.JSON(http.StatusOK, ShoppingCartResponseFormat{
 			Message: "successfull Operation ",
 			Data:    res,
 		})
