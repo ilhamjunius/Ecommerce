@@ -69,11 +69,16 @@ func (oc OrderController) CreateOrderCtrl() echo.HandlerFunc {
 		claims := uid.Claims.(jwt.MapClaims)
 		id := int(claims["userid"].(float64))
 
+		tmp := OrderCreateRequestFormat{}
+		c.Bind(&tmp)
+		fmt.Println(tmp)
+
 		newOrder := entities.Order{
 			UserID: uint(id),
 			Status: "Open",
 		}
-		res, err := oc.Repo.Create(newOrder)
+
+		res, err := oc.Repo.Create(newOrder, tmp.ArrId)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
 		}
@@ -97,7 +102,18 @@ func (oc OrderController) CancelOrderCtrl() echo.HandlerFunc {
 		claims := uid.Claims.(jwt.MapClaims)
 		id := int(claims["userid"].(float64))
 
-		res, err := oc.Repo.Cancel(oid, id)
+		res, _ := oc.Repo.Get(oid, id)
+		if res.InvoiceID != "Cancel" {
+			xendit.Opt.SecretKey = "xnd_development_VCICCONHPKS9PAXiekMZBWEyEKPDhRERS3YQZaZ29oZaIfGnSj1HFXErg3kAWcz"
+
+			data := invoice.ExpireParams{
+				ID: res.InvoiceID,
+			}
+			resp, _ := invoice.Expire(&data)
+			fmt.Println(resp)
+		}
+
+		res, err = oc.Repo.Cancel(oid, id)
 		if err != nil {
 			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
 		}
@@ -168,7 +184,15 @@ func (oc OrderController) CheckOrderCtrl() echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
 		}
 
-		// PASTIKAN ORDER ID DAN USER ID PUNYA ORANG TERSEBUT DAN ADA DI DALAM DATABASE
+		if order.Status == "Cancel" || order.Status == "Open" {
+			response := GetOrderResponseFormat{
+				Message: "Successful Operation",
+				Data:    order,
+			}
+			return c.JSON(http.StatusOK, response)
+		}
+
+		// PASTIKAN ORDER ID DAN USER ID PUNYA ORANG TERSEBUT DAN ADA DI DALAM DATABASE DAN TIDAK CANCEL
 
 		xendit.Opt.SecretKey = "xnd_development_VCICCONHPKS9PAXiekMZBWEyEKPDhRERS3YQZaZ29oZaIfGnSj1HFXErg3kAWcz"
 
