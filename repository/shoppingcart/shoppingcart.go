@@ -2,7 +2,6 @@ package shoppingcart
 
 import (
 	"ecommerce/entities"
-	"fmt"
 
 	"github.com/labstack/gommon/log"
 	"gorm.io/gorm"
@@ -25,22 +24,11 @@ func (ur *ShoppingCartRepository) Get(userId int) ([]entities.ShoppingCart, erro
 }
 func (ur *ShoppingCartRepository) Create(newShoppingcart entities.ShoppingCart) (entities.ShoppingCart, error) {
 	product := entities.Product{}
-	// type result struct {
-	// 	Price int
-	// }
-	// res := ur.db.Joins(&).Find(&newShoppingcart)
-	// ur.db.Model(&newShoppingcart).Select("products.price").Joins("left join products on shopping_carts.product_id = products.id").Scan(&product)
-	price := ur.db.Find(&product, "id= ?", newShoppingcart.ProductID)
-	fmt.Println("price:", price)
-	newShoppingcart.Subtotal = newShoppingcart.Qty * product.Price
 
-	// total:=
-	// if err := ur.db.Model(&newShoppingcart).Preload("Product").Find(&newShoppingcart).Error; err != nil {
-	// 	fmt.Println(err)
-	// }
-	// fmt.Printf("%+v\n", shoppingCart)
-	// fmt.Println(shoppingCart.Product.Price)
-	// newShoppingcart.Subtotal = uint(shoppingCart.Product.Price) * uint(newShoppingcart.Qty)
+	if err := ur.db.Find(&product, "id= ?", newShoppingcart.ProductID).Error; err != nil {
+		return newShoppingcart, err
+	}
+	newShoppingcart.Subtotal = newShoppingcart.Qty * product.Price
 
 	if err := ur.db.Save(&newShoppingcart).Error; err != nil {
 		return newShoppingcart, err
@@ -53,8 +41,6 @@ func (ur *ShoppingCartRepository) Update(updateCart entities.ShoppingCart, cartI
 		return cart, err
 	}
 
-	// cart.Qty = updateCart.Qty
-	// cart.Subtotal = updateCart.Subtotal
 	ur.db.Model(&cart).Updates(updateCart)
 
 	return cart, nil

@@ -33,12 +33,6 @@ func TestProductRepo(t *testing.T) {
 
 	})
 
-	t.Run("Select Products from Database", func(t *testing.T) {
-		res, err := productRepo.GetAll("sapu")
-		assert.Nil(t, err)
-		assert.Equal(t, res, res)
-	})
-
 	t.Run("Error Insert Product into Database", func(t *testing.T) {
 		var mockProduct entities.Product
 		mockProduct.Name = "bola"
@@ -48,11 +42,6 @@ func TestProductRepo(t *testing.T) {
 		mockProduct.Description = "bola basket"
 		db.Migrator().DropTable(&entities.Product{})
 		_, err := productRepo.Create(mockProduct)
-		assert.Error(t, err)
-	})
-
-	t.Run("Error Select Products from Database", func(t *testing.T) {
-		_, err := productRepo.GetAll("sapu%")
 		assert.Error(t, err)
 	})
 

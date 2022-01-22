@@ -16,22 +16,6 @@ func NewProductRepo(db *gorm.DB) *ProductRepository {
 	return &ProductRepository{db: db}
 }
 
-func (pr *ProductRepository) GetAll(keyword string) ([]entities.Product, error) {
-	Products := []entities.Product{}
-
-	if err := pr.db.Where("Name like ?", "%"+keyword+"%").Find(&Products).Error; err != nil {
-		return Products, err
-	}
-	return Products, nil
-}
-func (pr *ProductRepository) FilterProduct(keyword, category string) ([]entities.Product, error) {
-	Products := []entities.Product{}
-	keywordd := "sapu"
-	if err := pr.db.Where("Name like ?", keywordd+"%").Find(&Products).Error; err != nil {
-		return Products, err
-	}
-	return Products, nil
-}
 func (pr *ProductRepository) Get(productId int) (entities.Product, error) {
 	Product := entities.Product{}
 	if err := pr.db.Find(&Product, productId).Error; err != nil {
@@ -75,6 +59,8 @@ func (pr *ProductRepository) Delete(productId int) (entities.Product, error) {
 	return product, nil
 }
 
+var total_rowsGlobal int64
+
 func (pr *ProductRepository) Pagination(name, category string, pagination entities.Pagination) (ResultPagination, int) {
 
 	var product []entities.Product
@@ -88,12 +74,21 @@ func (pr *ProductRepository) Pagination(name, category string, pagination entiti
 		log.Fatal(err)
 	}
 	offset := pagination.Page * pagination.Limit
-	if name == "" {
-		errFind := pr.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort).Where("name LIKE ? and category_id=?", "%"+name+"%", categoryJoins.ID).Find(&product).Count(&totalRows).Error
+
+	if name == "" && category == "" {
+
+		errFind := pr.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort).Find(&product).Count(&totalRows).Error
+		if errFind != nil {
+			return ResultPagination{Error: errFind}, totalPages
+		}
+	} else if name == "" {
+
+		errFind := pr.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort).Where("category_id=?", categoryJoins.ID).Find(&product).Count(&totalRows).Error
 		if errFind != nil {
 			return ResultPagination{Error: errFind}, totalPages
 		}
 	} else if category == "" {
+
 		errFind := pr.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort).Where("name LIKE ?", "%"+name+"%").Find(&product).Count(&totalRows).Error
 		if errFind != nil {
 			return ResultPagination{Error: errFind}, totalPages
@@ -104,15 +99,19 @@ func (pr *ProductRepository) Pagination(name, category string, pagination entiti
 			return ResultPagination{Error: errFind}, totalPages
 		}
 	}
-
-	errFind := pr.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort).Where("name LIKE ? and category_id=?", "%"+name+"%", categoryJoins.ID).Find(&product).Error
-	if errFind != nil {
-		return ResultPagination{Error: errFind}, totalPages
+	// errCount := pr.db.Model(&product).Count(&totalRows).Error
+	// if errCount != nil {
+	// 	return ResultPagination{Error: errCount}, totalPages
+	// }
+	if offset == 0 {
+		total_rowsGlobal = totalRows
 	}
+
+	pagination.TotalRows = int(total_rowsGlobal)
 	pagination.Rows = product
 
-	pagination.TotalRows = int(totalRows)
-	totalPages = int(math.Ceil(float64(totalRows)/float64(pagination.Limit))) - 1
+	totalRows = int64(pagination.TotalRows)
+	totalPages = int(math.Ceil(float64(total_rowsGlobal)/float64(pagination.Limit))) - 1
 	if pagination.Page == 0 {
 		fromRow = 1
 		toRow = pagination.Limit
@@ -122,8 +121,8 @@ func (pr *ProductRepository) Pagination(name, category string, pagination entiti
 			toRow = (pagination.Page + 1) * pagination.Limit
 		}
 	}
-	if int64(toRow) > totalRows {
-		toRow = int(totalRows)
+	if int64(toRow) > total_rowsGlobal {
+		toRow = int(total_rowsGlobal)
 	}
 	pagination.FromRow = fromRow
 	pagination.ToRow = toRow

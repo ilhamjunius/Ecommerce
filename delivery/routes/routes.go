@@ -41,8 +41,7 @@ func RegisterPath(e *echo.Echo, uc *user.UsersController, pc *product.ProductCon
 	auth.POST("/orders/pay/:id", oc.PayOrderCtrl())
 	auth.POST("/orders/check/:id", oc.CheckOrderCtrl())
 	//Products
-	e.GET("/products", pc.GetAllProductCtrl())
-	e.GET("/pagination", pc.Pagination())
+	e.GET("/products", pc.Pagination())
 	e.GET("/products/:id", pc.GetProductCtrl())
 	auth.POST("/products", pc.CreateProductControllers())
 	auth.PUT("/products/:id", pc.UpdateProductCtrl())
