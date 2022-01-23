@@ -46,9 +46,7 @@ func (or *OrderRepository) Create(newOrder entities.Order, arr []int) (entities.
 
 	//TIDAK AKAN TERSAVE DALAM TABLE ORDER JIKA TOTALNYA 0,IN CASE CUSTOMER MENCOBA MENGISI DENGAN SHOPPING CART ORANG LAIN
 	if newOrder.Total != 0 {
-		if err := or.db.Save(&newOrder).Error; err != nil {
-			return newOrder, err
-		}
+		or.db.Save(&newOrder)
 	}
 
 	return newOrder, nil

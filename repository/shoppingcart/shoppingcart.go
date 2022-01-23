@@ -30,9 +30,7 @@ func (ur *ShoppingCartRepository) Create(newShoppingcart entities.ShoppingCart) 
 	}
 	newShoppingcart.Subtotal = newShoppingcart.Qty * product.Price
 
-	if err := ur.db.Save(&newShoppingcart).Error; err != nil {
-		return newShoppingcart, err
-	}
+	ur.db.Save(&newShoppingcart)
 	return newShoppingcart, nil
 }
 func (ur *ShoppingCartRepository) Update(updateCart entities.ShoppingCart, cartId, userId int) (entities.ShoppingCart, error) {
@@ -47,12 +45,6 @@ func (ur *ShoppingCartRepository) Update(updateCart entities.ShoppingCart, cartI
 }
 func (ur *ShoppingCartRepository) Delete(cartId, userId int) (entities.ShoppingCart, error) {
 	cart := entities.ShoppingCart{}
-	// if err := ur.db.Find(&cart, "id=? and user_id", cartId, userId).Error; err != nil {
-	// 	return cart, err
-	// }
-	// if err := ur.db.Delete(&cart).Error; err != nil {
-	// 	return cart, err
-	// }
 	err := ur.db.First(&cart, "id = ? and user_id=?", cartId, userId).Delete(&cart).Error
 	if err != nil {
 		return cart, err

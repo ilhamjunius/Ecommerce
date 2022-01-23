@@ -13,8 +13,17 @@ func TestCategoryRepo(t *testing.T) {
 	config := configs.GetConfig()
 	db := utils.InitDB(config)
 
+	db.Migrator().DropTable(&entities.ShoppingCart{})
+	db.Migrator().DropTable(&entities.Order{})
+	db.Migrator().DropTable(&entities.Product{})
 	db.Migrator().DropTable(&entities.Category{})
+	db.Migrator().DropTable(&entities.User{})
+
+	db.AutoMigrate(&entities.User{})
+	db.AutoMigrate(&entities.Order{})
 	db.AutoMigrate(&entities.Category{})
+	db.AutoMigrate(&entities.Product{})
+	db.AutoMigrate(&entities.ShoppingCart{})
 
 	categoryRepo := NewCategoryRepo(db)
 
@@ -27,81 +36,60 @@ func TestCategoryRepo(t *testing.T) {
 		assert.Equal(t, mockCategory.CategoryType, res.CategoryType)
 		assert.Equal(t, 1, int(res.ID))
 	})
-	t.Run("Error Insert Category into Database", func(t *testing.T) {
-		var mockCategory entities.Category
-		mockCategory.CategoryType = "mainan"
-
-		_, err := categoryRepo.Create(mockCategory)
-		assert.Error(t, err)
-
-	})
 
 	t.Run("Select Categories from Database", func(t *testing.T) {
 		res, err := categoryRepo.GetAll()
 		assert.Nil(t, err)
 		assert.Equal(t, res, res)
 	})
-	t.Run("Error Select Categories from Database", func(t *testing.T) {
-		db.Migrator().DropTable(&entities.Category{})
-		_, err := categoryRepo.GetAll()
-		assert.Error(t, err)
-
-	})
-	t.Run("Insert Category into Database", func(t *testing.T) {
-		var mockCategory entities.Category
-		mockCategory.CategoryType = "mainan"
-		db.AutoMigrate(&entities.Category{})
-		res, err := categoryRepo.Create(mockCategory)
-		assert.Nil(t, err)
-		assert.Equal(t, mockCategory.CategoryType, res.CategoryType)
-		assert.Equal(t, 1, int(res.ID))
-	})
 	t.Run("Select Category from Database", func(t *testing.T) {
 		res, err := categoryRepo.Get(1)
 		assert.Nil(t, err)
 		assert.Equal(t, res, res)
 	})
-	t.Run("Error Select CategoryById from Database", func(t *testing.T) {
-		_, err := categoryRepo.Get(100)
-		assert.Error(t, err)
-
-	})
-
-	t.Run("Update User ", func(t *testing.T) {
+	t.Run("Update Category ", func(t *testing.T) {
 		var mockCategory entities.Category
 		mockCategory.CategoryType = "elektronik"
 		res, err := categoryRepo.Update(mockCategory, 1)
 		assert.Nil(t, err)
 		assert.Equal(t, mockCategory.CategoryType, res.CategoryType)
 	})
-	t.Run("Error Update User ", func(t *testing.T) {
-		var mockCategory entities.Category
-		mockCategory.CategoryType = "elektronik"
-		db.Migrator().DropTable(&entities.Category{})
-		_, err := categoryRepo.Update(mockCategory, 2)
-		assert.Error(t, err)
-
-	})
-	db.AutoMigrate(&entities.Category{})
-	t.Run("Insert Category into Database", func(t *testing.T) {
-		var mockCategory entities.Category
-		mockCategory.CategoryType = "mainan"
-
-		res, err := categoryRepo.Create(mockCategory)
-		assert.Nil(t, err)
-		assert.Equal(t, mockCategory.CategoryType, res.CategoryType)
-		assert.Equal(t, 1, int(res.ID))
-	})
-
-	t.Run("Delete User", func(t *testing.T) {
+	t.Run("Delete Category", func(t *testing.T) {
 		res, err := categoryRepo.Delete(1)
 		assert.Nil(t, err)
 		assert.Equal(t, res, res)
 	})
-	t.Run("Error Delete User", func(t *testing.T) {
-		db.Migrator().DropTable(&entities.Category{})
-		_, err := categoryRepo.Delete(1)
-		assert.Error(t, err)
+	//TEST ERROR
+	db.Migrator().DropTable(&entities.ShoppingCart{})
+	db.Migrator().DropTable(&entities.Order{})
+	db.Migrator().DropTable(&entities.Product{})
+	db.Migrator().DropTable(&entities.Category{})
+	db.Migrator().DropTable(&entities.User{})
+
+	t.Run("Insert Category into Database", func(t *testing.T) {
+		var mockCategory entities.Category
+		mockCategory.CategoryType = "mainan"
+
+		_, err := categoryRepo.Create(mockCategory)
+		assert.NotNil(t, err)
 	})
-	db.AutoMigrate(&entities.Category{})
+	t.Run("Error Select CategoryById from Database", func(t *testing.T) {
+		_, err := categoryRepo.GetAll()
+		assert.NotNil(t, err)
+	})
+	t.Run("Error Select CategoryById from Database", func(t *testing.T) {
+		_, err := categoryRepo.Get(1)
+		assert.NotNil(t, err)
+	})
+	t.Run("Error Update User ", func(t *testing.T) {
+		var mockCategory entities.Category
+		mockCategory.CategoryType = "elektronik"
+		_, err := categoryRepo.Update(mockCategory, 2)
+		assert.NotNil(t, err)
+	})
+	t.Run("Error Delete Category", func(t *testing.T) {
+		_, err := categoryRepo.Delete(1)
+		assert.NotNil(t, err)
+	})
+
 }
