@@ -30,6 +30,7 @@ func RegisterPath(e *echo.Echo, uc *user.UsersController, pc *product.ProductCon
 	auth.DELETE("/category/:id", cc.DeleteCategoryCtrl())
 	//ShoppingCart
 	auth.GET("/shoppingcart", sc.GetShppingCartCtrl())
+	auth.GET("/shoppingcart/:id", sc.GetShppingCartIdCtrl())
 	auth.POST("/shoppingcart", sc.CreateShoppingCartCtrl())
 	auth.PUT("/shoppingcart/:id", sc.UpdateShoppingCartCtrl())
 	auth.DELETE("/shoppingcart/:id", sc.DeleteShoppingCartCtrl())

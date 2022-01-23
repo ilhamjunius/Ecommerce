@@ -342,6 +342,9 @@ func (m mockShoppingCartRepository) Get(userId int) ([]entities.ShoppingCart, er
 		{ID: 1, ProductID: 1, UserID: 1, Qty: 100, Subtotal: 10000},
 	}, nil
 }
+func (m mockShoppingCartRepository) GetById(id, userId int) (entities.ShoppingCart, error) {
+	return entities.ShoppingCart{ID: 1, ProductID: 1, UserID: 1, Qty: 100, Subtotal: 10000}, nil
+}
 func (m mockShoppingCartRepository) Update(updateCart entities.ShoppingCart, cartId, userId int) (entities.ShoppingCart, error) {
 	return entities.ShoppingCart{ID: 1, ProductID: 1, UserID: 1, OrderId: updateCart.OrderId, Qty: updateCart.Qty, Subtotal: 10000}, nil
 }
@@ -359,6 +362,9 @@ func (m mockFalseShoppingCartRepository) Get(userId int) ([]entities.ShoppingCar
 	return []entities.ShoppingCart{
 		{ID: 1, ProductID: 1, UserID: 1, Qty: 100, Subtotal: 10000},
 	}, errors.New("False Login Object")
+}
+func (m mockFalseShoppingCartRepository) GetById(id, userId int) (entities.ShoppingCart, error) {
+	return entities.ShoppingCart{ID: 1, ProductID: 1, UserID: 1, Qty: 100, Subtotal: 10000}, errors.New("False Login Object")
 }
 func (m mockFalseShoppingCartRepository) Update(updateCart entities.ShoppingCart, cartId, userId int) (entities.ShoppingCart, error) {
 	return entities.ShoppingCart{ID: 1, UserID: 1, OrderId: 1, Qty: 100}, errors.New("False Login Object")

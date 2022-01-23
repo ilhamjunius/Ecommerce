@@ -36,6 +36,28 @@ func (sc ShoppingCartController) GetShppingCartCtrl() echo.HandlerFunc {
 		return c.JSON(http.StatusOK, response)
 	}
 }
+func (sc ShoppingCartController) GetShppingCartIdCtrl() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		id, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
+		}
+		uid := c.Get("user").(*jwt.Token)
+		claims := uid.Claims.(jwt.MapClaims)
+		userId := int(claims["userid"].(float64))
+
+		shopping_carts, err := sc.Repo.GetById(id, userId)
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
+		}
+
+		response := ShoppingCartResponseFormat{
+			Message: "Successfull Operation",
+			Data:    shopping_carts,
+		}
+		return c.JSON(http.StatusOK, response)
+	}
+}
 
 func (sc ShoppingCartController) CreateShoppingCartCtrl() echo.HandlerFunc {
 	return func(c echo.Context) error {

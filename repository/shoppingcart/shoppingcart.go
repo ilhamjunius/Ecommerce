@@ -22,6 +22,14 @@ func (ur *ShoppingCartRepository) Get(userId int) ([]entities.ShoppingCart, erro
 	}
 	return cart, nil
 }
+func (ur *ShoppingCartRepository) GetById(id, userId int) (entities.ShoppingCart, error) {
+	cart := entities.ShoppingCart{}
+	if err := ur.db.Where("id=? and user_id = ?", id, userId).First(&cart).Error; err != nil {
+		log.Warn("Found database error", err)
+		return cart, err
+	}
+	return cart, nil
+}
 func (ur *ShoppingCartRepository) Create(newShoppingcart entities.ShoppingCart) (entities.ShoppingCart, error) {
 	product := entities.Product{}
 
