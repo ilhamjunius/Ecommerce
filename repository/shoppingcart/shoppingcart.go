@@ -48,7 +48,7 @@ func (ur *ShoppingCartRepository) Update(updateCart entities.ShoppingCart, cartI
 	}
 	if updateCart.Qty != 0 {
 		product := entities.Product{}
-		if err := ur.db.First(&product, "id= ?", updateCart.ProductID).Error; err != nil {
+		if err := ur.db.First(&product, "id= ?", cart.ProductID).Error; err != nil {
 			return updateCart, err
 		}
 		updateCart.Subtotal = updateCart.Qty * product.Price
