@@ -82,7 +82,7 @@ func (oc OrderController) CreateOrderCtrl() echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
 		}
 		return c.JSON(http.StatusOK, CreateOrderResponseFormat{
-			Message: "successfull Operation ",
+			Message: "Successful Operation",
 			Data:    res,
 		})
 
@@ -118,7 +118,7 @@ func (oc OrderController) CancelOrderCtrl() echo.HandlerFunc {
 		}
 
 		return c.JSON(http.StatusOK, CancelOrderResponseFormat{
-			Message: "successfull Operation ",
+			Message: "Successful Operation",
 			Data:    res,
 		})
 	}
@@ -161,7 +161,7 @@ func (oc OrderController) PayOrderCtrl() echo.HandlerFunc {
 		}
 
 		return c.JSON(http.StatusOK, CancelOrderResponseFormat{
-			Message: "successfull Operation ",
+			Message: "Successful Operation",
 			Data:    res,
 		})
 	}
