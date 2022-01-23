@@ -65,7 +65,7 @@ func (pc ProductController) CreateProductControllers() echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
 		}
 		return c.JSON(http.StatusOK, ProductResponseFormat{
-			Message: "success create new product",
+			Message: "Successfull Operation",
 			Data:    res,
 		})
 	}
@@ -123,13 +123,10 @@ func (pc ProductController) DeleteProductCtrl() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
 		}
 
-		deletedProduct, _ := pc.Repo.Delete(id)
-
-		if deletedProduct.ID != 0 {
-			return c.JSON(http.StatusOK, common.NewSuccessOperationResponse())
-		} else {
+		if _, err := pc.Repo.Delete(id); err != nil {
 			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
 		}
+		return c.JSON(http.StatusOK, common.NewSuccessOperationResponse())
 	}
 
 }
@@ -148,7 +145,10 @@ func (pc ProductController) Pagination() echo.HandlerFunc {
 		product, _ := pc.Repo.Pagination(name, category, pagination)
 
 		if product.Error != nil {
-			return c.JSON(http.StatusBadRequest, PaginationResponseFormat{Error: product.Error})
+			return c.JSON(http.StatusBadRequest, PaginationResponseFormat{
+				Message: "Bad Request",
+				Error:   product.Error,
+			})
 		}
 
 		var data = product.Result
