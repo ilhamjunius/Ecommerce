@@ -1,0 +1,618 @@
+openapi: 3.0.0
+info:
+  version: '1'
+  title: Ecommerce
+  description: Ecommerce Alterra
+servers:
+  # Added by API Auto Mocking Plugin
+  # Added by API Auto Mocking Plugin
+  # Added by API Auto Mocking Plugin
+  - description: LocalHost
+    url: localhost:8000
+paths:
+  /users/register:
+    post:
+      summary: Create New User
+      tags:
+        - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsersSchema'
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200'
+        '400':
+          $ref: '#/components/responses/Response400'
+  /users/login:
+    post:
+      summary: Login User
+      tags:
+        - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: Andrew@yahoo.com
+                password:
+                  type: string
+                  example: Andrew123
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200'
+        '400':
+          $ref: '#/components/responses/Response400'
+        '404':
+          $ref: '#/components/responses/Response404'
+  /users:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Get All Users
+      tags:
+        - Users
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200'
+        '404':
+          $ref: '#/components/responses/Response404'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /users/{userId}:
+    put:
+      security:
+        - bearerAuth: []
+      summary: Update User By ID
+      tags:
+        - Users
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: Ilham@yahoo.com
+                password:
+                  type: string
+                  example: ilham123
+                name:
+                  type: string
+                  example: ilham
+                handphonenumber:
+                  type: string
+                  example: 9876543210
+                role:
+                  type: string
+                  example: admin
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200'
+        '404':
+          $ref: '#/components/responses/Response404'
+    delete:
+      security:
+        - bearerAuth: []
+      summary: Delete User ID
+      tags:
+        - Users
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200'
+        '404':
+          $ref: '#/components/responses/Response404'
+  /category:
+    post:
+      security:
+        - bearerAuth: []
+      summary: Create Category
+      tags:
+        - Category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category_type:
+                  type: string
+                  example: mainan
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200'
+        '400':
+          $ref: '#/components/responses/Response400'
+    get:
+      summary: Get all Category
+      tags:
+        - Category
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200'
+        '400':
+          $ref: '#/components/responses/Response400'
+        '404':
+          $ref: '#/components/responses/Response404'
+  /Category/{categoryId}:
+    get:
+      summary: Get a Category by id
+      tags:
+        - Category
+      parameters:
+        - name: categoryId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200'
+        '404':
+          $ref: '#/components/responses/Response404'
+    put:
+      security:
+        - bearerAuth: []
+      summary: Update by ID
+      tags:
+        - Category
+      parameters:
+        - name: categoryId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category_type:
+                  type: string
+                  example: elektronik
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200'
+        '400':
+          $ref: '#/components/responses/Response400'
+        '404':
+          $ref: '#/components/responses/Response404'
+    delete:
+      security:
+        - bearerAuth: []
+      summary: Delete by ID
+      tags:
+        - Category
+      parameters:
+        - name: categoryId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200'
+        '400':
+          $ref: '#/components/responses/Response400'
+        '404':
+          $ref: '#/components/responses/Response404'
+  /products:
+    post:
+      security:
+        - bearerAuth: []
+      summary: Create Product
+      tags:
+        - Products
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productname:
+                  type: string
+                  example: bola
+                price:
+                  type: integer
+                  example: 10000
+                stock:
+                  type: integer
+                  example: 10
+                category_id:
+                  type: integer
+                  example: 1
+                description:
+                  type: string
+                  example: bola basket
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200'
+        '400':
+          $ref: '#/components/responses/Response400'
+    get:
+      summary: Get all products
+      tags:
+        - Products
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200'
+        '400':
+          $ref: '#/components/responses/Response400'
+        '404':
+          $ref: '#/components/responses/Response404'
+  /Products/{productId}:
+    get:
+      summary: Get a product by id
+      tags:
+        - Products
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200'
+        '404':
+          $ref: '#/components/responses/Response404'
+    put:
+      security:
+        - bearerAuth: []
+      summary: Update by ID
+      tags:
+        - Products
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productname:
+                  type: string
+                  example: bola
+                price:
+                  type: integer
+                  example: 10000
+                stock:
+                  type: integer
+                  example: 15
+                category_id:
+                  type: integer
+                  example: 1
+                description:
+                  type: string
+                  example: bola basket
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200'
+        '400':
+          $ref: '#/components/responses/Response400'
+        '404':
+          $ref: '#/components/responses/Response404'
+    delete:
+      security:
+        - bearerAuth: []
+      summary: Delete by ID
+      tags:
+        - Products
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200'
+        '400':
+          $ref: '#/components/responses/Response400'
+        '404':
+          $ref: '#/components/responses/Response404'
+  /shoppingcart:
+    post:
+      security:
+        - bearerAuth: []
+      summary: Create a ShoppingCart
+      tags:
+        - Shopping Cart
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product_id:
+                  type: integer
+                  example: 1
+                quantity:
+                  type: integer
+                  example: 5
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200'
+        '400':
+          $ref: '#/components/responses/Response400'
+    get:
+      security:
+        - bearerAuth: []
+      summary: Get all shopping carts
+      tags:
+        - Shopping Cart
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200'
+        '400':
+          $ref: '#/components/responses/Response400'
+        '404':
+          $ref: '#/components/responses/Response404'
+  /shoppingcart/{shoppingcartId}:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Get a shopping cart by id
+      tags:
+        - Shopping Cart
+      parameters:
+        - name: shoppingcartId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200'
+        '404':
+          $ref: '#/components/responses/Response404'
+    put:
+      security:
+        - bearerAuth: []
+      summary: Update by ID
+      tags:
+        - Shopping Cart
+      parameters:
+        - name: shoppingcartId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                order_id:
+                  type: integer
+                  example: 1
+                product_id:
+                  type: integer
+                  example: 1
+                quantity:
+                  type: integer
+                  example: 5
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200'
+        '400':
+          $ref: '#/components/responses/Response400'
+        '404':
+          $ref: '#/components/responses/Response404'
+    delete:
+      security:
+        - bearerAuth: []
+      summary: Delete by ID
+      tags:
+        - Shopping Cart
+      parameters:
+        - name: shoppingcartId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200'
+        '400':
+          $ref: '#/components/responses/Response400'
+        '404':
+          $ref: '#/components/responses/Response404'
+  /orders:
+    post:
+      security:
+        - bearerAuth: []
+      summary: Create Order
+      tags:
+        - Orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cartid:
+                  type: array
+                  items: 
+                    type: integer
+                    example: [1,2,3]
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200'
+        '400':
+          $ref: '#/components/responses/Response400'
+    get:
+      security:
+        - bearerAuth: []
+      summary: Get all Orders
+      tags:
+        - Orders
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200'
+        '400':
+          $ref: '#/components/responses/Response400'
+        '404':
+          $ref: '#/components/responses/Response404'
+  /orders/{orderId}:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Get an Order by id
+      tags:
+        - Orders
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200'
+        '404':
+          $ref: '#/components/responses/Response404'
+  /orders/cancel/{orderId}:
+    put:
+      security:
+        - bearerAuth: []
+      summary: Cancel an Order by id
+      tags:
+        - Orders
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200'
+        '404':
+          $ref: '#/components/responses/Response404'
+  /orders/pay/{orderId}:
+    post:
+      security:
+        - bearerAuth: []
+      summary: Open Invoice for an Order by id
+      tags:
+        - Orders
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200'
+        '404':
+          $ref: '#/components/responses/Response404'
+  /orders/check/{orderId}:
+    post:
+      security:
+        - bearerAuth: []
+      summary: Update Invoice Status for an Order by id
+      tags:
+        - Orders
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200'
+        '404':
+          $ref: '#/components/responses/Response404'
+components:
+  securitySchemes:
+    bearerAuth:           
+      type: http
+      scheme: bearer
+      bearerFormat: JWT   
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+    Response200:
+      description: success create
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                example: 200
+              message:
+                type: string
+                example: Successful Operation
+    Response400:
+      description: bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                example: 400
+              message:
+                type: string
+                example: Bad Request
+    Response404:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                example: 404
+              message:
+                type: string
+                example: Not Found
+  schemas:
+    UsersSchema:
+      type: object
+      properties:
+        email:
+          type: string
+          example: Andrew@yahoo.com
+        password:
+          type: string
+          example: Andrew123
+        name:
+          type: string
+          example: Andrew
+        handphonenumber:
+          type: string
+          example: 0123456789
+        role:
+          type: string
+          example: admin
