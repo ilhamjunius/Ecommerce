@@ -38,13 +38,7 @@ func (pr *ProductRepository) Update(newProduct entities.Product, productId int) 
 		return newProduct, err
 	}
 
-	product.Name = newProduct.Name
-	product.Price = newProduct.Price
-	product.Stock = newProduct.Stock
-	product.CategoryID = newProduct.CategoryID
-	product.Description = newProduct.Description
-
-	pr.db.Save(&product)
+	pr.db.Model(&product).Updates(newProduct)
 
 	return newProduct, nil
 }

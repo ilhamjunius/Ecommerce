@@ -43,17 +43,10 @@ func (cr *CategoryRepository) Create(newCategory entities.Category) (entities.Ca
 
 func (cr *CategoryRepository) Update(newCategory entities.Category, categoryId int) (entities.Category, error) {
 	category := entities.Category{}
-	if err := cr.db.Find(&category, "id=?", categoryId).Error; err != nil {
+	if err := cr.db.First(&category, "id=?", categoryId).Error; err != nil {
 		return newCategory, err
 	}
-
-	category.CategoryType = newCategory.CategoryType
-
-	// if err := cr.db.Find(&category, "category_type=?", newCategory.CategoryType).Error; err != nil {
-	// 	return newCategory, err
-	// }
-
-	cr.db.Save(&category)
+	cr.db.Model(&category).Updates(newCategory)
 
 	return newCategory, nil
 }
