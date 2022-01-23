@@ -2,7 +2,11 @@ package shoppingcart
 
 import "ecommerce/entities"
 
-type ProductResponseFormat struct {
+type ShoppingCartResponseFormat struct {
 	Message string                `json:"message"`
 	Data    entities.ShoppingCart `json:"data"`
+}
+type ManyShoppingCartResponseFormat struct {
+	Message string                  `json:"message"`
+	Data    []entities.ShoppingCart `json:"data"`
 }

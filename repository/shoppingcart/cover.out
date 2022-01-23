@@ -1,0 +1,14 @@
+mode: set
+ecommerce/repository/shoppingcart/shoppingcart.go:14.63,16.2 1 1
+ecommerce/repository/shoppingcart/shoppingcart.go:17.84,19.77 2 1
+ecommerce/repository/shoppingcart/shoppingcart.go:23.2,23.18 1 1
+ecommerce/repository/shoppingcart/shoppingcart.go:19.77,22.3 2 1
+ecommerce/repository/shoppingcart/shoppingcart.go:25.112,28.87 2 1
+ecommerce/repository/shoppingcart/shoppingcart.go:31.2,34.29 3 1
+ecommerce/repository/shoppingcart/shoppingcart.go:28.87,30.3 1 1
+ecommerce/repository/shoppingcart/shoppingcart.go:36.127,38.87 2 1
+ecommerce/repository/shoppingcart/shoppingcart.go:42.2,44.18 2 1
+ecommerce/repository/shoppingcart/shoppingcart.go:38.87,40.3 1 1
+ecommerce/repository/shoppingcart/shoppingcart.go:46.93,49.16 3 1
+ecommerce/repository/shoppingcart/shoppingcart.go:52.2,52.18 1 1
+ecommerce/repository/shoppingcart/shoppingcart.go:49.16,51.3 1 1

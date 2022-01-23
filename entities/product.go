@@ -1,11 +1,14 @@
 package entities
 
+import "gorm.io/gorm"
+
 type Product struct {
-	ID           uint           `gorm:"productid;primary_key:auto_increment" json:"id" form:"id"`
-	Name         string         `json:"product_name" form:"product_name"`
-	Price        int            `json:"price" form:"price"`
-	Stock        int            `json:"stock" form:"stok"`
-	CategoryID   uint           `gorm:"not null" json:"category_id" form:"category_id"`
-	Description  string         `json:"description" form:"description"`
-	ShoppingCart []ShoppingCart `gorm:"foreignKey:ProductID"`
+	gorm.Model
+	ID           uint   `json:"product_id" form:"product_id"`
+	Name         string `json:"product_name" form:"product_name"`
+	Price        int    `json:"price" form:"price"`
+	Stock        int    `json:"stock" form:"stok"`
+	Description  string `json:"description" form:"description"`
+	CategoryID   uint   `gorm:"not null" json:"category_id" form:"category_id"`
+	ShoppingCart []ShoppingCart
 }

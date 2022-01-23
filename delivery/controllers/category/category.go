@@ -70,7 +70,6 @@ func (ci CategoryController) PostCategoryCtrl() echo.HandlerFunc {
 		}
 
 		newCategory := entities.Category{
-			ID:           newCategoryReq.ID,
 			CategoryType: newCategoryReq.CategoryType,
 		}
 
@@ -105,7 +104,6 @@ func (ci CategoryController) UpdateCategoryCtrl() echo.HandlerFunc {
 		}
 
 		newCategory := entities.Category{
-			ID:           newCategoryReq.ID,
 			CategoryType: newCategoryReq.CategoryType,
 		}
 
