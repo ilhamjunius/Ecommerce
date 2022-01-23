@@ -15,6 +15,6 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           cd repos
-          cd ecommerce
+          cd Ecommerce
           git pull origin main 
           docker-compose down && docker-compose up --build -d
