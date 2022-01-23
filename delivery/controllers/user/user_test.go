@@ -131,7 +131,7 @@ func TestUser(t *testing.T) {
 		res := httptest.NewRecorder()
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
 		context := e.NewContext(req, res)
-		context.SetPath("/category")
+		context.SetPath("/users")
 
 		userController := NewUsersControllers(mockUserRepository{})
 
@@ -151,7 +151,7 @@ func TestUser(t *testing.T) {
 		res := httptest.NewRecorder()
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
 		context := e.NewContext(req, res)
-		context.SetPath("/category")
+		context.SetPath("/users")
 
 		userController := NewUsersControllers(mockFalseUserRepository{})
 

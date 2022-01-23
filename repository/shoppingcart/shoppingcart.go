@@ -35,9 +35,9 @@ func (ur *ShoppingCartRepository) Create(newShoppingcart entities.ShoppingCart) 
 	}
 	return newShoppingcart, nil
 }
-func (ur *ShoppingCartRepository) Update(updateCart entities.ShoppingCart, cartId int) (entities.ShoppingCart, error) {
+func (ur *ShoppingCartRepository) Update(updateCart entities.ShoppingCart, cartId, userId int) (entities.ShoppingCart, error) {
 	cart := entities.ShoppingCart{}
-	if err := ur.db.First(&cart, "id=?", cartId).Error; err != nil {
+	if err := ur.db.First(&cart, "id=? and user_id=?", cartId, userId).Error; err != nil {
 		return cart, err
 	}
 
@@ -45,12 +45,16 @@ func (ur *ShoppingCartRepository) Update(updateCart entities.ShoppingCart, cartI
 
 	return cart, nil
 }
-func (ur *ShoppingCartRepository) Delete(cartId int) (entities.ShoppingCart, error) {
+func (ur *ShoppingCartRepository) Delete(cartId, userId int) (entities.ShoppingCart, error) {
 	cart := entities.ShoppingCart{}
-	if err := ur.db.Find(&cart, "id=?", cartId).Error; err != nil {
-		return cart, err
-	}
-	if err := ur.db.Delete(&cart).Error; err != nil {
+	// if err := ur.db.Find(&cart, "id=? and user_id", cartId, userId).Error; err != nil {
+	// 	return cart, err
+	// }
+	// if err := ur.db.Delete(&cart).Error; err != nil {
+	// 	return cart, err
+	// }
+	err := ur.db.First(&cart, "id = ? and user_id=?", cartId, userId).Delete(&cart).Error
+	if err != nil {
 		return cart, err
 	}
 	return cart, nil

@@ -75,7 +75,7 @@ func TestShoppingCartRepo(t *testing.T) {
 	t.Run("Update ShoppingCart ", func(t *testing.T) {
 		var mockCategory entities.ShoppingCart
 		mockCategory.Qty = 4
-		res, err := shoppingCartRepo.Update(mockCategory, 1)
+		res, err := shoppingCartRepo.Update(mockCategory, 1, 1)
 		assert.Nil(t, err)
 		assert.Equal(t, mockCategory.Qty, res.Qty)
 	})
@@ -83,12 +83,12 @@ func TestShoppingCartRepo(t *testing.T) {
 		var mockCategory entities.ShoppingCart
 		mockCategory.Qty = 4
 		db.Migrator().DropTable(&entities.ShoppingCart{})
-		_, err := shoppingCartRepo.Update(mockCategory, 1)
+		_, err := shoppingCartRepo.Update(mockCategory, 1, 1)
 		assert.Error(t, err)
 
 	})
 	t.Run("Error Delete ShoppingCart", func(t *testing.T) {
-		_, err := shoppingCartRepo.Delete(1)
+		_, err := shoppingCartRepo.Delete(1, 1000)
 		assert.Error(t, err)
 
 	})
@@ -108,7 +108,7 @@ func TestShoppingCartRepo(t *testing.T) {
 
 	})
 	t.Run("Delete ShoppingCart", func(t *testing.T) {
-		res, err := shoppingCartRepo.Delete(1)
+		res, err := shoppingCartRepo.Delete(1, 1)
 		assert.Nil(t, err)
 		assert.Equal(t, res, res)
 	})

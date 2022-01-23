@@ -30,7 +30,7 @@ func (sc ShoppingCartController) GetShppingCartCtrl() echo.HandlerFunc {
 		}
 
 		response := ManyShoppingCartResponseFormat{
-			Message: "Successful Operation",
+			Message: "Successfull Operation",
 			Data:    shopping_carts,
 		}
 		return c.JSON(http.StatusOK, response)
@@ -48,7 +48,7 @@ func (sc ShoppingCartController) CreateShoppingCartCtrl() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
 		}
 		newShoppingCart := entities.ShoppingCart{
-			OrderId:   newShoppingCartreq.OrderId,
+			OrderId:   0,
 			UserID:    uint(id),
 			ProductID: newShoppingCartreq.ProductId,
 			Qty:       newShoppingCartreq.Qty,
@@ -59,7 +59,7 @@ func (sc ShoppingCartController) CreateShoppingCartCtrl() echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
 		}
 		return c.JSON(http.StatusOK, ShoppingCartResponseFormat{
-			Message: "successfull Operation ",
+			Message: "Successfull Operation",
 			Data:    res,
 		})
 
@@ -76,21 +76,21 @@ func (sc ShoppingCartController) UpdateShoppingCartCtrl() echo.HandlerFunc {
 		}
 		uid := c.Get("user").(*jwt.Token)
 		claims := uid.Claims.(jwt.MapClaims)
-		idToken := int(claims["userid"].(float64))
+		userId := int(claims["userid"].(float64))
 
 		updateShoppingCartReq := ShoppingCartRequestFormat{}
 		if err := c.Bind(&updateShoppingCartReq); err != nil {
 			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
 		}
-		if idToken != int(updateShoppingCartReq.UserId) {
-			return c.JSON(http.StatusUnauthorized, common.NewStatusNotAuthorized())
-		}
+		// if idToken != int(updateShoppingCartReq.UserId) {
+		// 	return c.JSON(http.StatusUnauthorized, common.NewStatusNotAuthorized())
+		// }
 		updateShopingCart := entities.ShoppingCart{
 			Qty:     updateShoppingCartReq.Qty,
 			OrderId: updateShoppingCartReq.OrderId,
 		}
 
-		if _, err := sc.Repo.Update(updateShopingCart, id); err != nil {
+		if _, err := sc.Repo.Update(updateShopingCart, id, userId); err != nil {
 			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
 		}
 		return c.JSON(http.StatusOK, common.NewSuccessOperationResponse())
@@ -107,16 +107,15 @@ func (sc ShoppingCartController) DeleteShoppingCartCtrl() echo.HandlerFunc {
 		}
 		uid := c.Get("user").(*jwt.Token)
 		claims := uid.Claims.(jwt.MapClaims)
-		idToken := int(claims["userid"].(float64))
+		userId := int(claims["userid"].(float64))
+		// if idToken != int(deletedShoppingCart.UserID) {
+		// 	return c.JSON(http.StatusUnauthorized, common.NewStatusNotAuthorized())
+		// }
 
-		deletedShoppingCart, _ := sc.Repo.Delete(id)
-		if idToken != int(deletedShoppingCart.UserID) {
-			return c.JSON(http.StatusUnauthorized, common.NewStatusNotAuthorized())
-		}
-		if deletedShoppingCart.ID != 0 {
-			return c.JSON(http.StatusOK, common.NewSuccessOperationResponse())
-		} else {
+		if _, err := sc.Repo.Delete(id, userId); err != nil {
 			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
 		}
+		return c.JSON(http.StatusOK, common.NewSuccessOperationResponse())
+
 	}
 }
