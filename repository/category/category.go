@@ -49,9 +49,9 @@ func (cr *CategoryRepository) Update(newCategory entities.Category, categoryId i
 
 	category.CategoryType = newCategory.CategoryType
 
-	if err := cr.db.Find(&category, "category_type=?", newCategory.CategoryType).Error; err != nil {
-		return newCategory, err
-	}
+	// if err := cr.db.Find(&category, "category_type=?", newCategory.CategoryType).Error; err != nil {
+	// 	return newCategory, err
+	// }
 
 	cr.db.Save(&category)
 
@@ -63,8 +63,6 @@ func (cr *CategoryRepository) Delete(categoryId int) (entities.Category, error) 
 	if err := cr.db.Find(&category, "id=?", categoryId).Error; err != nil {
 		return category, err
 	}
-	if err := cr.db.Delete(&category).Error; err != nil {
-		return category, err
-	}
+	cr.db.Delete(&category)
 	return category, nil
 }

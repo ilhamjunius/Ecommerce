@@ -7,10 +7,8 @@ ecommerce/repository/users/user.go:25.80,27.71 2 1
 ecommerce/repository/users/user.go:30.2,32.21 2 1
 ecommerce/repository/users/user.go:27.71,29.3 1 1
 ecommerce/repository/users/user.go:35.92,37.65 2 1
-ecommerce/repository/users/user.go:41.2,47.71 6 1
-ecommerce/repository/users/user.go:51.2,53.21 2 1
+ecommerce/repository/users/user.go:41.2,43.21 2 1
 ecommerce/repository/users/user.go:37.65,39.3 1 1
-ecommerce/repository/users/user.go:47.71,49.3 1 0
-ecommerce/repository/users/user.go:56.69,58.65 2 1
-ecommerce/repository/users/user.go:61.2,63.18 2 1
-ecommerce/repository/users/user.go:58.65,60.3 1 1
+ecommerce/repository/users/user.go:46.69,48.65 2 1
+ecommerce/repository/users/user.go:51.2,53.18 2 1
+ecommerce/repository/users/user.go:48.65,50.3 1 1

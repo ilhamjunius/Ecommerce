@@ -71,7 +71,6 @@ func (oc OrderController) CreateOrderCtrl() echo.HandlerFunc {
 
 		tmp := OrderCreateRequestFormat{}
 		c.Bind(&tmp)
-		fmt.Println(tmp)
 
 		newOrder := entities.Order{
 			UserID: uint(id),

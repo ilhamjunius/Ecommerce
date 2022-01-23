@@ -18,17 +18,17 @@ func TestOrderRepo(t *testing.T) {
 	config := configs.GetConfig()
 	db := utils.InitDB(config)
 
+	db.Migrator().DropTable(&entities.ShoppingCart{})
+	db.Migrator().DropTable(&entities.Order{})
+	db.Migrator().DropTable(&entities.Product{})
+	db.Migrator().DropTable(&entities.Category{})
+	db.Migrator().DropTable(&entities.User{})
+
 	userRepo := user.NewUserRepo(db)
 	categoryRepo := category.NewCategoryRepo(db)
 	productRepo := product.NewProductRepo(db)
 	shoppingCartRepo := shoppingcart.NewShoppingCartRepo(db)
 	OrderRepo := NewOrderRepo(db)
-
-	db.Migrator().DropTable(&entities.ShoppingCart{})
-	db.Migrator().DropTable(&entities.Product{})
-	db.Migrator().DropTable(&entities.Category{})
-	db.Migrator().DropTable(&entities.Order{})
-	db.Migrator().DropTable(&entities.User{})
 
 	db.AutoMigrate(&entities.User{})
 	db.AutoMigrate(&entities.Order{})
@@ -98,10 +98,15 @@ func TestOrderRepo(t *testing.T) {
 		assert.Nil(t, err)
 		assert.Equal(t, res, res)
 	})
+	db.Migrator().DropTable(&entities.ShoppingCart{})
 	db.Migrator().DropTable(&entities.Order{})
+	db.Migrator().DropTable(&entities.Product{})
+	db.Migrator().DropTable(&entities.Category{})
+	db.Migrator().DropTable(&entities.User{})
+
 	t.Run("Insert Order into Database", func(t *testing.T) {
 		var mockOrder entities.Order
-		mockOrder.UserID = 1
+		mockOrder.UserID = 2
 		arr := []int{1, 2}
 
 		_, err := OrderRepo.Create(mockOrder, arr)
@@ -127,4 +132,5 @@ func TestOrderRepo(t *testing.T) {
 		_, err := OrderRepo.Pay("1", "asdf", 1, 1)
 		assert.NotNil(t, err)
 	})
+
 }
